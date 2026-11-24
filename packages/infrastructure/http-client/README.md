@@ -1,16 +1,20 @@
 # @goto/infrastructure-http-client
 
-A private, framework-independent TypeScript package for HTTP requests. The package currently exports `HttpError`. Its `status` property holds the numeric HTTP response status.
-
-## Planned first request
-
-The proposed first caller is a feature that loads tickets for an event. Once `createHttpClient` is implemented, the host will supply `fetch` and the feature will supply a decoder that accepts `unknown` and returns its ticket list.
+The host supplies `fetch` to this private, framework-independent HTTP client. Call `getJson` with a path and a decoder. The decoder receives `unknown` and its return type determines the result.
 
 ```ts
 import { createHttpClient } from '@goto/infrastructure-http-client';
 
 const http = createHttpClient(fetch);
-const tickets = await http.getJson('/api/events/demo/tickets', { parse: parseTicketList, signal });
+
+const parseColorNames = (value: unknown): string[] => {
+  if (!Array.isArray(value) || !value.every((name) => typeof name === 'string')) {
+    throw new TypeError('Expected an array of strings');
+  }
+  return value;
+};
+
+const colorNames = await http.getJson('/api/palettes/aurora/colors', { parse: parseColorNames });
 ```
 
-The planned request accepts an optional `AbortSignal`, throws `HttpError` for a non-2xx response and propagates network and abort errors.
+Pass an optional `signal` alongside `parse` to cancel the request. A non-2xx response throws `HttpError` with the numeric response `status` before the client reads the body. Network failures, aborts, JSON syntax errors and decoder errors propagate to the caller.
