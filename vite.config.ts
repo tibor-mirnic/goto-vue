@@ -30,7 +30,20 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true }
   },
   run: {
-    cache: true
+    cache: true,
+    tasks: {
+      coverage: {
+        command: "vp test run --coverage --exclude '!(apps|packages)/**' --exclude '**/{dist,dist-ssr,coverage}/**'",
+        cache: false
+      }
+    }
+  },
+  test: {
+    coverage: {
+      include: ['{apps,packages}/*/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}'],
+      exclude: ['**/*.d.{ts,cts,mts}', '**/__tests__/**', '**/*.{test,spec}.*'],
+      reporter: [['text', { skipFull: false }], 'html']
+    }
   },
   staged: {
     // Merge duplicate declarations before sorting the combined list of members.
