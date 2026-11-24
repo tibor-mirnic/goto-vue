@@ -9,8 +9,12 @@ export default defineConfig({
   },
   lint: {
     plugins: ['unicorn', 'typescript', 'oxc', 'import'],
-    jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
+    jsPlugins: [
+      { name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' },
+      { name: 'workspace', specifier: './tooling/oxlint-plugin.mjs' }
+    ],
     rules: {
+      'workspace/require-arrow-functions': 'error',
       'vite-plus/prefer-vite-plus-imports': 'error',
       'no-unused-vars': [
         'error',

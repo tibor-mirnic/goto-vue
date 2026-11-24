@@ -29,3 +29,8 @@ release. Add a tool name to select part of the graph. For example, run
 - [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
 <!--VITE PLUS END-->
+
+## Project conventions
+
+- Use arrow functions for implementations except class constructors and property getters and setters.
+- Use fictional endpoints and neutral example data in tests and documentation.
