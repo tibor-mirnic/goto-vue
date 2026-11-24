@@ -1,16 +1,21 @@
-import { defineConfig } from "vite-plus";
+import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
-  fmt: {},
+  fmt: {
+    printWidth: 120,
+    semi: true,
+    singleQuote: true,
+    trailingComma: 'none'
+  },
   lint: {
-    jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
-    rules: { "vite-plus/prefer-vite-plus-imports": "error" },
-    options: { typeAware: true, typeCheck: true },
+    jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
+    rules: { 'vite-plus/prefer-vite-plus-imports': 'error' },
+    options: { typeAware: true, typeCheck: true }
   },
   run: {
-    cache: true,
+    cache: true
   },
   staged: {
-    "{apps,packages}/**/*.{ts,tsx,js,jsx,vue}": ["vp lint --fix", "vp fmt --write"],
-  },
+    '{apps,packages}/**/*.{ts,tsx,js,jsx,vue}': ['vp lint --fix', 'vp fmt --write']
+  }
 });
