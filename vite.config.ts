@@ -10,4 +10,7 @@ export default defineConfig({
   run: {
     cache: true,
   },
+  staged: {
+    "{apps,packages}/**/*.{ts,tsx,js,jsx,vue}": ["vp lint --fix", "vp fmt --write"],
+  },
 });
