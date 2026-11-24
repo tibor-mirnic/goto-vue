@@ -9,6 +9,8 @@
     "dev": "vp run website#dev"
   },
   "devDependencies": {
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-angular": "catalog:",
     "vite-plus": "catalog:"
   },
   "devEngines": {
