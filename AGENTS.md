@@ -32,5 +32,6 @@ release. Add a tool name to select part of the graph. For example, run
 
 ## Project conventions
 
+- Scaffold each new library from the workspace root with the built-in `vp create vite:library` template in a fresh `packages/<group>/<library>` directory. Adapt the generated scaffold to workspace conventions before adding the implementation. See [Adding a package](README.md#adding-a-package) for the command and checklist.
 - Use arrow functions for implementations except class constructors and property getters and setters.
 - Use fictional endpoints and neutral example data in tests and documentation.

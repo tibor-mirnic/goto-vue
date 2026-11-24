@@ -28,6 +28,26 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 
 Use arrow functions for implementations, including callbacks, object methods and class methods. Class constructors and property getters and setters use method syntax. The rule applies only to implementations. [Arrow-function lint rule and examples](tooling/README.md)
 
+## Adding a package
+
+Start each new library from the built-in Vite+ TypeScript library template. From the workspace root, choose an unused directory under `packages/<group>/<library>` and run the generator. For example, this creates the `color-cache` directory in the existing infrastructure group.
+
+```sh
+pnpm exec vp create vite:library --directory packages/infrastructure/color-cache --no-interactive --no-agent --no-editor
+```
+
+1. Set the package name to `@goto/<group>-<library>` (here, `@goto/infrastructure-color-cache`), set `private` to `true` and describe the library. Remove placeholder author, license and repository metadata, public publishing settings and the `prepublishOnly` script.
+2. Keep `type: "module"` and the `dist` files list. Set `exports["."]` to `{ "types": "./dist/index.d.mts", "import": "./dist/index.mjs" }` and remove the template's `./package.json` export. Keep the generated build, dev, test and check scripts. Use `catalog:` for `@types/node`, `typescript` and `vite-plus`. Keep strict NodeNext TypeScript settings. In the package's Vite+ config, remove the generated `pack.exports` and `pack.deps.resolveDepSubpath` settings so the manifest defines the public entry point. Keep `pack.dts.generator` set to `tsgo`.
+3. Replace the starter implementation with named public exports in `src/index.ts`. Replace the sample test with behavior tests under `tests/`, and document the public API in the package README with an example that imports from its scoped name. A workspace consumer declares the library with `workspace:*` in its dependencies.
+4. Check whether the group matches the package globs in `pnpm-workspace.yaml` and the source globs for the named-export lint override and coverage include list in the root `vite.config.ts`. Add a glob wherever the group is missing.
+5. After editing manifests, refresh the root lockfile, verify a frozen install, and run the workspace build, checks and tests. Include the updated `pnpm-lock.yaml` with the package.
+
+```sh
+pnpm install
+pnpm install --frozen-lockfile
+pnpm exec vp run ready
+```
+
 ## Commits and pushes
 
 Installation runs the root `prepare` script to register the hooks in `.vite-hooks/`. If a hook fails to run, check `vp hooks status` for the installed dispatcher at `.vite-hooks/_` and the three project hooks. Run `vp run prepare` to repeat setup. For runtime or package-manager problems, the global CLI provides `vp env doctor`.
