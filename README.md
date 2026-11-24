@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a vanilla TypeScript website in `apps/website` and a TypeScript library in `packages/utils`. The library exposes the named exports from `packages/utils/src/index.ts` through the package name `utils`.
+A Vite+ workspace with a vanilla TypeScript website in `apps/website` and a private HTTP client in `packages/infrastructure/http-client`. Import its public API from `@goto/infrastructure-http-client`.
 
 ## First checkout
 
@@ -20,9 +20,9 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `vp run dev`      | Starts the website dev server. Open the local URL it prints.                                                                                                        |
 | `vp check`        | Checks workspace formatting, lint rules and TypeScript types.                                                                                                       |
-| `vp test run`     | Runs unit tests once from the root. The current suite lives in `packages/utils/tests`.                                                                              |
+| `vp test run`     | Runs unit tests once from the root. The current suite lives in `packages/infrastructure/http-client/tests`.                                                         |
 | `vp run -r test`  | Runs each workspace package's test script. The pre-push hook uses this command.                                                                                     |
-| `vp run -r build` | Type-checks and bundles the website into `apps/website/dist/` and packs the library's ESM and declarations into `packages/utils/dist/`.                             |
+| `vp run -r build` | Type-checks and bundles the website into `apps/website/dist/` and packs the library's ESM and declarations into `packages/infrastructure/http-client/dist/`.        |
 | `vp run ready`    | Builds first so declarations are available, then runs `vp check` and the package tests. Use this for a clean checkout or a full local check.                        |
 | `vp run coverage` | Runs unit tests with V8 coverage across app and library source, including untested files. Prints a summary and writes the combined report to `coverage/index.html`. |
 
