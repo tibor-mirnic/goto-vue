@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a vanilla TypeScript website in `apps/website` and a private HTTP client in `packages/infrastructure/http-client`. Import its public API from `@goto/infrastructure-http-client`.
+A Vite+ workspace with a vanilla TypeScript website in `apps/website` and two private libraries. The palette contract lives in `packages/domain/palette` and the HTTP client lives in `packages/infrastructure/http-client`. Import them through `@goto/domain-palette` and `@goto/infrastructure-http-client`.
 
 ## First checkout
 
@@ -20,9 +20,9 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `vp run dev`      | Starts the website dev server. Open the local URL it prints.                                                                                                        |
 | `vp check`        | Checks workspace formatting, lint rules and TypeScript types.                                                                                                       |
-| `vp test run`     | Runs unit tests once from the root. The current suite lives in `packages/infrastructure/http-client/tests`.                                                         |
+| `vp test run`     | Runs unit tests once from the root. Each library keeps its suite in its own `tests/` directory.                                                                     |
 | `vp run -r test`  | Runs each workspace package's test script. The pre-push hook uses this command.                                                                                     |
-| `vp run -r build` | Type-checks and bundles the website into `apps/website/dist/` and packs the library's ESM and declarations into `packages/infrastructure/http-client/dist/`.        |
+| `vp run -r build` | Type-checks and bundles the website into `apps/website/dist/` and packs each library’s ESM entry and declarations into its own `dist/` directory.                   |
 | `vp run ready`    | Builds first so declarations are available, then runs `vp check` and the package tests. Use this for a clean checkout or a full local check.                        |
 | `vp run coverage` | Runs unit tests with V8 coverage across app and library source, including untested files. Prints a summary and writes the combined report to `coverage/index.html`. |
 
@@ -58,6 +58,6 @@ Installation runs the root `prepare` script to register the hooks in `.vite-hook
 
 ## Tooling decisions
 
-- The website runs its TypeScript check uncached because cached native compiler results could miss incompatible changes. Consumers import the library through its package entry point. Relative imports across packages still need an ownership rule.
+- The website runs its TypeScript check uncached because cached native compiler results could miss incompatible changes. Consumers import each library through its package entry point. Relative imports across packages still need an ownership rule.
 - When Vue components enter the workspace, verify single-file component type errors, unused imports and coverage with the Vue transform. Choose component tests, Storybook and styling tools when a component needs them.
 - Validate the packed library from a consumer before introducing a local registry such as Verdaccio. Release automation depends on a versioned artifact, owner and delivery target. The root test command supports CI once a provider is chosen.

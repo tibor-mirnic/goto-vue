@@ -27,7 +27,9 @@ export default defineConfig({
     },
     overrides: [
       {
-        files: ['{apps/*,packages/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}'],
+        files: [
+          '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}'
+        ],
         rules: { 'import/no-default-export': 'error' }
       }
     ],
@@ -44,7 +46,9 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      include: ['{apps/*,packages/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}'],
+      include: [
+        '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}'
+      ],
       exclude: ['**/*.d.{ts,cts,mts}', '**/__tests__/**', '**/*.{test,spec}.*'],
       reporter: [['text', { skipFull: false }], 'html']
     }

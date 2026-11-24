@@ -237,6 +237,18 @@ importers:
         specifier: 'catalog:'
         version: 1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(jiti@2.7.0)(typescript@7.0.2)
 
+  packages/domain/palette:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.6
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(jiti@2.7.0)(typescript@7.0.2)
+
   packages/infrastructure/http-client:
     devDependencies:
       '@types/node':
