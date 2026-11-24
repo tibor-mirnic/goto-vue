@@ -1,2 +1,4 @@
-export { type PaletteColors, type PaletteGetJson, parsePaletteColors } from './api/index.ts';
-export { type PaletteState, createPaletteSelection } from './features/index.ts';
+import PaletteModuleComponent from './module/PaletteModule.vue';
+
+// Infer the public type here so the emitted declaration can resolve in NodeNext.
+export const PaletteModule = PaletteModuleComponent;

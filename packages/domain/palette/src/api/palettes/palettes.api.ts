@@ -1,13 +1,7 @@
-import { type PaletteColors, parsePaletteColors } from './palette-colors.ts';
+import { createHttpClient } from '@goto/infrastructure-http-client';
+import { parsePaletteColors } from './palette-colors.ts';
 
-export type PaletteGetJson = (
-  path: string,
-  options: { parse: typeof parsePaletteColors; signal: AbortSignal }
-) => Promise<PaletteColors>;
+const { getJson } = createHttpClient((path, init) => fetch(path, init));
 
-export const getPaletteColors = (
-  getJson: PaletteGetJson,
-  palette: string,
-  signal: AbortSignal
-): Promise<PaletteColors> =>
+export const getPaletteColors = (palette: string, signal: AbortSignal) =>
   getJson(`/palettes/${encodeURIComponent(palette)}.json`, { parse: parsePaletteColors, signal });

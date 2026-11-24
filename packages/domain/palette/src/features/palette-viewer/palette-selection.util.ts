@@ -1,5 +1,4 @@
-import type { PaletteColors } from '../../api/palettes/palette-colors.ts';
-import { type PaletteGetJson, getPaletteColors } from '../../api/palettes/palettes.api.ts';
+import type { PaletteColors } from '../../api/index.ts';
 
 export type PaletteState =
   | { readonly status: 'idle' }
@@ -7,7 +6,10 @@ export type PaletteState =
   | { readonly status: 'ready'; readonly palette: string; readonly colors: PaletteColors }
   | { readonly status: 'error'; readonly palette: string };
 
-export const createPaletteSelection = (getJson: PaletteGetJson, onStateChange: (state: PaletteState) => void) => {
+export const createPaletteSelection = (
+  loadColors: (palette: string, signal: AbortSignal) => Promise<PaletteColors>,
+  onStateChange: (state: PaletteState) => void
+) => {
   let active: AbortController | undefined;
   let selected: string | undefined;
   let disposed = false;
@@ -27,7 +29,7 @@ export const createPaletteSelection = (getJson: PaletteGetJson, onStateChange: (
 
     let result: PaletteState;
     try {
-      const colors = await getPaletteColors(getJson, palette, request.signal);
+      const colors = await loadColors(palette, request.signal);
       result = { status: 'ready', palette, colors };
     } catch {
       result = { status: 'error', palette };

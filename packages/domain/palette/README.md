@@ -1,35 +1,27 @@
 # @goto/domain-palette
 
-`parsePaletteColors` decodes an unknown value into `PaletteColors`, a readonly list of color names. It accepts empty arrays and preserves names in input order, including duplicates. It throws a `TypeError` if the input is not an array or any name is not a string containing at least one non-whitespace character.
+## Mounting the Vue module
 
-```ts
-import { parsePaletteColors } from '@goto/domain-palette';
+Import the stylesheet once in the host and mount `PaletteModule` as the page content for the host’s palette route. The chooser offers `aurora` and `mist`. It starts with no selection, displays the selected palette’s colors, and offers a retry if loading fails. Unmounting it cancels any pending request.
 
-const colors = parsePaletteColors(['indigo', 'harbor blue']);
+```vue
+<script setup lang="ts">
+import { PaletteModule } from '@goto/domain-palette';
+import '@goto/domain-palette/style.css';
+</script>
+
+<template>
+  <PaletteModule />
+</template>
 ```
 
-## Loading a palette
+The domain API uses the workspace HTTP client to fetch the selected asset. Serve `/palettes/aurora.json` and `/palettes/mist.json` from the host with an array of nonempty color names, for example `["indigo", "harbor blue"]`. The viewer preserves the response order and duplicate colors. Selecting another palette cancels the earlier request.
 
-The host passes its JSON GET function and a state callback to `createPaletteSelection`. The callback receives `idle` immediately, then `loading` and either `ready` or `error` for the selected palette. The viewer can choose its own error message and bind its retry button to `selection.retry`.
+## Source layout and build
 
-```ts
-import { createPaletteSelection } from '@goto/domain-palette';
-import { createHttpClient } from '@goto/infrastructure-http-client';
+- `src/index.ts` exports `PaletteModule`. The `/components` subpath resolves to the same compiled module and declarations.
+- `src/module/PaletteModule.vue` mounts `PePalettePage`. The page provides the viewer’s context and mounts `PePaletteViewer`.
+- `src/features/palette-viewer/index.ts` exposes the feature’s component and provider within the package. The provider supplies the two example names, connects the workflow to the domain API and disposes it with the page scope. The viewer reads the context through the private `usePaletteViewer` composable and owns the selection binding, markup and scoped styles.
+- `palette-selection.util.ts` and its colocated tests belong to the viewer feature. This utility coordinates loading, cancellation and retry through a domain loader that accepts a palette name and abort signal. The `src/api/palettes/` resource owns the request URL and payload decoder.
 
-const selection = createPaletteSelection(createHttpClient(fetch).getJson, (state) => {
-  if (state.status === 'ready') console.log(state.palette, state.colors);
-});
-
-await selection.select('aurora');
-```
-
-The host serves an array of color names at `/palettes/<encoded palette name>.json`. For example, a Vite host can serve Aurora from `public/palettes/aurora.json`.
-
-Each selection or retry cancels the previous request. Only the latest request can publish a result. `retry()` reloads the last selection and has no effect before the first selection. Call `selection.dispose()` when the viewer unmounts to cancel pending work and stop further requests and notifications.
-
-## Source layout
-
-- `src/api/palettes/` owns the palette color contract, decoder and JSON request, including the asset URL.
-- `src/features/palette-viewer/` owns selection state, cancellation, retries and disposal.
-- Each directory keeps its tests in `__tests__/`. Implementations and tests import from the files that define the symbols they use.
-- Each resource and feature lists its public exports in an `index.ts`. The `src/api/` and `src/features/` indexes collect those named exports for the package entry in `src/index.ts`.
+Within the package, `vp run build` bundles the module and stylesheet, then emits declarations with the workspace Vue checker. `vp run dev` watches the JavaScript, CSS and declarations.

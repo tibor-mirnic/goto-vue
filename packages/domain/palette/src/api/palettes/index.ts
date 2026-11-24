@@ -1,2 +1,2 @@
-export { type PaletteColors, parsePaletteColors } from './palette-colors.ts';
-export type { PaletteGetJson } from './palettes.api.ts';
+export type { PaletteColors } from './palette-colors.ts';
+export { getPaletteColors } from './palettes.api.ts';

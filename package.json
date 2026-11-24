@@ -5,14 +5,18 @@
   "type": "module",
   "scripts": {
     "prepare": "vp config --no-agent",
-    "ready": "vp run -r build && vp check && vp run -r test",
-    "dev": "vp run website#dev"
+    "ready": "vp run -r build && vp run check && vp run -r test",
+    "dev": "vp run website#dev",
+    "check": "vp run -r vue:typecheck && vp check"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",
     "@commitlint/config-angular": "catalog:",
+    "@typescript/typescript6": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "vite-plus": "catalog:"
+    "vite-plus": "catalog:",
+    "vue-tsc": "catalog:"
   },
   "devEngines": {
     "packageManager": {

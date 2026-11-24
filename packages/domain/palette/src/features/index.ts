@@ -1,1 +1,1 @@
-export { type PaletteState, createPaletteSelection } from './palette-viewer/index.ts';
+export { PePaletteViewer, providePaletteViewer } from './palette-viewer/index.ts';

@@ -1,6 +1,8 @@
+import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
+  plugins: [vue()],
   fmt: {
     printWidth: 120,
     semi: true,
@@ -39,6 +41,7 @@ export default defineConfig({
     cache: true,
     tasks: {
       coverage: {
+        dependsOn: ['@goto/infrastructure-http-client#build'],
         command: "vp test run --coverage --exclude '!(apps|packages)/**' --exclude '**/{dist,dist-ssr,coverage}/**'",
         cache: false
       }

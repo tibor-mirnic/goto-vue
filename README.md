@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a vanilla TypeScript website in `apps/website` and two private libraries. The palette contract lives in `packages/domain/palette` and the HTTP client lives in `packages/infrastructure/http-client`. Import them through `@goto/domain-palette` and `@goto/infrastructure-http-client`.
+A Vite+ workspace with a vanilla TypeScript website in `apps/website` and two private libraries. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet and usage.
 
 ## First checkout
 
@@ -19,11 +19,12 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | Command           | What it does                                                                                                                                                        |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `vp run dev`      | Starts the website dev server. Open the local URL it prints.                                                                                                        |
-| `vp check`        | Checks workspace formatting, lint rules and TypeScript types.                                                                                                       |
-| `vp test run`     | Runs unit tests once from the root. Discovers each library’s tests, including tests alongside domain features.                                                      |
-| `vp run -r test`  | Runs each workspace package's test script. The pre-push hook uses this command.                                                                                     |
-| `vp run -r build` | Type-checks and bundles the website into `apps/website/dist/` and packs each library’s ESM entry and declarations into its own `dist/` directory.                   |
-| `vp run ready`    | Builds first so declarations are available, then runs `vp check` and the package tests. Use this for a clean checkout or a full local check.                        |
+| `vp check`        | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client has been built.                                                           |
+| `vp run check`    | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
+| `vp test run`     | Runs all unit tests once from the root after the HTTP client has been built.                                                                                        |
+| `vp run -r test`  | Builds the palette’s HTTP client dependency and runs each package’s tests. The pre-push hook uses this command.                                                     |
+| `vp run -r build` | Builds the website and libraries. The palette build checks Vue types and emits its module, declarations and stylesheet into `dist/`.                                |
+| `vp run ready`    | Builds first, then runs `vp run check` and the package tests. Use this for a clean checkout or a full local check.                                                  |
 | `vp run coverage` | Runs unit tests with V8 coverage across app and library source, including untested files. Prints a summary and writes the combined report to `coverage/index.html`. |
 
 Use arrow functions for implementations, including callbacks, object methods and class methods. Class constructors and property getters and setters use method syntax. The rule applies only to implementations. [Arrow-function lint rule and examples](tooling/README.md)
@@ -37,10 +38,11 @@ pnpm exec vp create vite:library --directory packages/infrastructure/color-cache
 ```
 
 1. Set the package name to `@goto/<group>-<library>` (here, `@goto/infrastructure-color-cache`), set `private` to `true` and describe the library. Remove placeholder author, license and repository metadata, public publishing settings and the `prepublishOnly` script.
-2. Keep `type: "module"` and the `dist` files list. Set `exports["."]` to `{ "types": "./dist/index.d.mts", "import": "./dist/index.mjs" }` and remove the template's `./package.json` export. Keep the generated build, dev, test and check scripts. Use `catalog:` for `@types/node`, `typescript` and `vite-plus`. Keep strict NodeNext TypeScript settings. In the package's Vite+ config, remove the generated `pack.exports` and `pack.deps.resolveDepSubpath` settings so the manifest defines the public entry point. Keep `pack.dts.generator` set to `tsgo`.
+2. Keep `type: "module"` and the `dist` files list. For a TypeScript-only library using `vp pack`, set `exports["."]` to `{ "types": "./dist/index.d.mts", "import": "./dist/index.mjs" }` and remove the template's `./package.json` export. Keep the generated build, dev, test and check scripts. Use `catalog:` for `@types/node`, `typescript` and `vite-plus`. Keep strict NodeNext TypeScript settings. In the package's Vite+ config, remove the generated `pack.exports` and `pack.deps.resolveDepSubpath` settings so the manifest defines the public entry point. Keep `pack.dts.generator` set to `tsgo`.
 3. Replace the starter implementation with named public exports in `src/index.ts`. Replace the sample test with behavior tests under `tests/` or in `__tests__/` alongside their owning module, and document the public API in the package README with an example that imports from its scoped name. A workspace consumer declares the library with `workspace:*` in its dependencies.
 4. Check whether the group matches the package globs in `pnpm-workspace.yaml` and the source globs for the named-export lint override and coverage include list in the root `vite.config.ts`. Add a glob wherever the group is missing.
-5. After editing manifests, refresh the root lockfile, verify a frozen install, and run the workspace build, checks and tests. Include the updated `pnpm-lock.yaml` with the package.
+5. For a package with Vue single-file components, add its `tsconfig.vue.json` and uncached `vue:typecheck` task. [Workspace Vue checker](tooling/README.md#vue-type-checking)
+6. After editing manifests, refresh the root lockfile, verify a frozen install, and run the workspace build, checks and tests. Include the updated `pnpm-lock.yaml` with the package.
 
 ```sh
 pnpm install
