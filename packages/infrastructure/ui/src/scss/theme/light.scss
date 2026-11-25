@@ -1,0 +1,20 @@
+@use 'sass:map';
+@use '../public';
+@use 'goto-ui-theme' as loader;
+
+@mixin theme(
+  $label-gap: public.$label-gap,
+  $list-indent: public.$list-indent,
+  $text-color: map.get(public.$palette, text)
+) {
+  $variables: map.merge(
+    public.$goto-ui-variables,
+    spacing,
+    (
+      label-gap: $label-gap,
+      list-indent: $list-indent
+    )
+  );
+  $colors: map.set(public.$color-palette, map.get(public.$theme-light, text), $text-color);
+  @include loader.load-goto-ui-theme(public.$theme-light, $variables, $colors);
+}

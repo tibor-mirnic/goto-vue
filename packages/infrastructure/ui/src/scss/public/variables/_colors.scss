@@ -1,0 +1,11 @@
+@use 'sass:map';
+
+$color-palette: (
+  current: currentColor
+);
+$theme-light: (
+  text: current
+);
+$palette: (
+  text: map.get($color-palette, map.get($theme-light, text))
+);

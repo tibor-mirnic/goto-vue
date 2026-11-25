@@ -1,0 +1,9 @@
+$label-gap: 0.25rem;
+$list-indent: 1.5rem;
+
+$goto-ui-variables: (
+  spacing: (
+    label-gap: $label-gap,
+    list-indent: $list-indent
+  )
+);

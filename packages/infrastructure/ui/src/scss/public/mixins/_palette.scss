@@ -1,0 +1,6 @@
+@use 'sass:map';
+@use '../variables';
+
+@mixin palette($text-color: map.get(variables.$palette, text)) {
+  --goto-ui-text-color: #{$text-color};
+}

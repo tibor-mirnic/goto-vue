@@ -1,0 +1,25 @@
+{
+  "name": "@goto/infrastructure-ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared UI styles for the goto-vue workspace.",
+  "files": [
+    "src/scss"
+  ],
+  "type": "module",
+  "exports": {
+    "./styles.scss": {
+      "sass": "./src/scss/_index.scss"
+    }
+  },
+  "scripts": {
+    "test": "vp test",
+    "check": "vp check"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "sass": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
