@@ -275,6 +275,9 @@ importers:
 
   apps/nuxt:
     dependencies:
+      '@goto/domain-palette':
+        specifier: workspace:*
+        version: link:../../packages/domain/palette
       nuxt:
         specifier: 'catalog:'
         version: 4.7.0(dc2e030f6a48bf7ee9c8b2c43cfb8fa1)
