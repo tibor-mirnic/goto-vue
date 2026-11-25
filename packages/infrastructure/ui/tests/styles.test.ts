@@ -44,6 +44,9 @@ test('the standalone stylesheet loader emits each component once and scopes toke
   expect(css).toContain(':where(:root)');
   expect(css.match(/\.goto-ui-button \{/g)).toHaveLength(1);
   expect(css.match(/\.goto-ui-label \{/g)).toHaveLength(1);
+  expect(css.match(/\.goto-ui-select \{/g)).toHaveLength(1);
+  expect(css.match(/\.goto-ui-ul \{/g)).toHaveLength(1);
+  expect(css).toContain('padding-inline-start: var(--goto-ui-list-indent)');
   expect(css).toContain('gap: var(--goto-ui-label-gap)');
   expect(compile('.surface { @include ui.theme; }')).not.toContain('.goto-ui-button');
 });

@@ -1,0 +1,6 @@
+@mixin goto-ui-ul {
+  .goto-ui-ul {
+    margin: 0;
+    padding-inline-start: var(--goto-ui-list-indent);
+  }
+}

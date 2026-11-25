@@ -1,2 +1,2 @@
 import './src/scss/default.scss';
-export { UiButton, UiLabel } from './src/index.ts';
+export { UiButton, UiLabel, UiSelect, UiUl } from './src/index.ts';

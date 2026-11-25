@@ -1,7 +1,11 @@
 @use 'buttons';
 @use 'labels';
+@use 'lists';
+@use 'selects';
 
 @mixin load-goto-ui-components {
   @include buttons.goto-ui-button;
   @include labels.goto-ui-label;
+  @include lists.goto-ui-ul;
+  @include selects.goto-ui-select;
 }
