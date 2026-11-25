@@ -38,6 +38,8 @@ Use arrow functions for implementations, including callbacks, object methods and
 
 Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages/(private)/`. Nuxt omits parenthesized folder names from URLs, so `(public)/palette.vue` serves `/palette`. The root URL redirects there. [Nuxt route groups](https://nuxt.com/docs/4.x/directory-structure/app/pages#route-groups)
 
+Run `vp run dev:nuxt` from the workspace root and open `/palette`. Selecting a palette loads `/palettes/<name>.json` from the Nuxt host’s `apps/nuxt/public/palettes/` directory. Each file contains a JSON array of nonblank color names. Selecting `aurora` lists `indigo` and `harbor blue`. Selecting `mist` loads an empty array (`[]`) and displays “No colors in mist”.
+
 The vanilla Vite host mounts `apps/vite/src/routes/public/HomeRoute.ts` directly from `src/main.ts` at startup. Its sibling `src/routes/private/` reserves space for future pages. When the host adopts Vue Router, explicit route records will map URLs to these files. Both hosts currently use the folders for organization only.
 
 ## Adding an app
