@@ -1,0 +1,3 @@
+@use './index' as ui;
+
+@include ui.load-goto-ui-styles;

@@ -1,0 +1,7 @@
+@use 'buttons';
+@use 'labels';
+
+@mixin load-goto-ui-components {
+  @include buttons.goto-ui-button;
+  @include labels.goto-ui-label;
+}

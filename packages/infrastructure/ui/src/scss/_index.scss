@@ -1,3 +1,4 @@
 @forward 'public';
 @forward 'theme/goto-ui-theme' show load-goto-ui-theme;
 @forward 'theme/light' show theme;
+@forward 'theme/default-styles' show load-goto-ui-styles;

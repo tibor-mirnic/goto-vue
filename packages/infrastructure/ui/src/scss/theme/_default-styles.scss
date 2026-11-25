@@ -1,0 +1,10 @@
+@use '../private/components';
+@use 'light';
+
+@mixin load-goto-ui-styles {
+  :where(:root) {
+    @include light.theme;
+  }
+
+  @include components.load-goto-ui-components;
+}

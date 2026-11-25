@@ -1,0 +1,8 @@
+@mixin goto-ui-label {
+  .goto-ui-label {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--goto-ui-label-gap);
+    color: var(--goto-ui-text-color);
+  }
+}

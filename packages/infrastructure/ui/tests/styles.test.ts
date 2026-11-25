@@ -38,3 +38,12 @@ test('the theme loader resolves semantic colors and spacing from the supplied ma
   expect(css).toContain('--goto-ui-label-gap: 1rem;');
   expect(css).toContain('--goto-ui-list-indent: 2rem;');
 });
+
+test('the standalone stylesheet loader emits each component once and scopes token defaults', () => {
+  const css = compile('@include ui.load-goto-ui-styles;');
+  expect(css).toContain(':where(:root)');
+  expect(css.match(/\.goto-ui-button \{/g)).toHaveLength(1);
+  expect(css.match(/\.goto-ui-label \{/g)).toHaveLength(1);
+  expect(css).toContain('gap: var(--goto-ui-label-gap)');
+  expect(compile('.surface { @include ui.theme; }')).not.toContain('.goto-ui-button');
+});

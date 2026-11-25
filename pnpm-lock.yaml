@@ -300,6 +300,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.6
+      '@vitejs/plugin-vue':
+        specifier: 'catalog:'
+        version: 6.0.11(@voidzero-dev/vite-plus-core@8.3.8000(@types/node@26.6.6)(@vue/language-core@3.3.14)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2)))(vue@3.5.46(typescript@7.0.2))
       sass:
         specifier: 'catalog:'
         version: 1.108.2
@@ -309,6 +312,9 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2))
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.46(typescript@7.0.2)
 
 packages:
 
