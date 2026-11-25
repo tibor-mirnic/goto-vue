@@ -30,7 +30,7 @@ const renderViewer = async (
   // Vue handles errors in server-prefetch hooks internally. Propagate fixture errors to Vitest.
   expect(preparation).toBeDefined();
   await preparation;
-  return html;
+  return html.replace(/<!--.*?-->/gs, '');
 };
 
 test('renders loading, a retry action on failure, and colors after recovery', async () => {
@@ -38,11 +38,12 @@ test('renders loading, a retry action on failure, and colors after recovery', as
   const loading = await renderViewer(pending, ({ select }) => {
     void select('aurora');
   });
-  expect(loading).toContain('Loading aurora…');
+  expect(loading).toContain('<div role="status">Loading aurora…</div>');
+  expect(loading).toContain('<option value="aurora" selected>aurora</option>');
 
   const failedRequest = vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 503 }));
   const failed = await renderViewer(failedRequest, ({ select }) => select('aurora'));
-  expect(failed).toContain('Could not load aurora.');
+  expect(failed).toContain('<div role="status">Could not load aurora.</div><button');
   expect(failed).toMatch(/<button type="button"[^>]*>Retry<\/button>/);
 
   const request = vi
@@ -54,6 +55,7 @@ test('renders loading, a retry action on failure, and colors after recovery', as
     await retry();
   });
   expect(ready).toContain('Colors in aurora');
+  expect(ready).toMatch(/<ul[^>]*aria-label="Colors"[^>]*>/);
   expect(ready.match(/<li[^>]*>teal<\/li>/g)).toHaveLength(2);
   expect(ready).not.toContain('<button');
   expect(request.mock.calls.map(([path]) => path)).toEqual(['/palettes/aurora.json', '/palettes/aurora.json']);
@@ -78,6 +80,8 @@ test('keeps the latest palette visible when an earlier request finishes late', a
     await first;
   });
   expect(html).toContain('No colors in mist');
+  expect(html).toContain('<option value="mist" selected>mist</option>');
+  expect(html).not.toContain('<ul');
   expect(html).not.toContain('obsolete');
 });
 

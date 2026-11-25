@@ -1,0 +1,8 @@
+@use '@goto/infrastructure-ui/styles.scss' as ui;
+@use './features';
+@use './pages';
+
+@mixin load-pe-module($theme: ui.$theme-light, $variables: ui.$goto-ui-variables, $color-palette: ui.$color-palette) {
+  @include features.load-pe-features($theme, $variables, $color-palette);
+  @include pages.load-pe-pages($theme, $variables, $color-palette);
+}

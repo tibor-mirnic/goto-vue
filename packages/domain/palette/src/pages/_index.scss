@@ -1,0 +1,5 @@
+@use './palette/pe-palette-page' as page;
+
+@mixin load-pe-pages($theme, $variables, $color-palette) {
+  @include page.pe-palette-page($theme, $variables, $color-palette);
+}

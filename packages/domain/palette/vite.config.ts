@@ -7,11 +7,11 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: { index: 'src/index.ts' },
+      entry: { index: 'entry.js' },
       formats: ['es'],
       cssFileName: 'style'
     },
-    rolldownOptions: { external: ['vue', '@goto/infrastructure-http-client'] }
+    rolldownOptions: { external: ['vue', '@goto/infrastructure-http-client', '@goto/infrastructure-ui'] }
   },
   run: {
     tasks: {

@@ -13,6 +13,8 @@ test('mounts the palette page with no host inputs or initial request', async () 
   const html = await renderToString(h(PaletteModule));
   expect(html).toContain('<main class="pe-palette-page">');
   expect(html).toContain('<h1>Palettes</h1>');
-  expect(html).toContain('Choose a palette');
+  expect(html).toMatch(
+    /<label[^>]*>.*?Palette.*?<select[^>]*>.*?<option value(?:="")? disabled selected>Choose a palette/
+  );
   expect(request).not.toHaveBeenCalled();
 });

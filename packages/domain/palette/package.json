@@ -27,11 +27,13 @@
     "check": "vp check && vp run vue:typecheck"
   },
   "dependencies": {
-    "@goto/infrastructure-http-client": "workspace:*"
+    "@goto/infrastructure-http-client": "workspace:*",
+    "@goto/infrastructure-ui": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
+    "sass": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:",
     "vue": "catalog:"

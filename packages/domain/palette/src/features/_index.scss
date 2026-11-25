@@ -1,0 +1,5 @@
+@use './palette-viewer/pe-palette-viewer' as viewer;
+
+@mixin load-pe-features($theme, $variables, $color-palette) {
+  @include viewer.pe-palette-viewer($theme, $variables, $color-palette);
+}

@@ -1,0 +1,13 @@
+@mixin pe-palette-viewer($theme, $variables, $color-palette) {
+  .pe-palette-viewer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+
+    &__retry {
+      justify-self: start;
+    }
+  }
+}
