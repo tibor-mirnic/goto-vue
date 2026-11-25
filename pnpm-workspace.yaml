@@ -16,12 +16,14 @@ catalog:
   '@typescript/typescript6': 6.0.2
   '@vitejs/plugin-vue': 6.0.11
   '@vitest/coverage-v8': 5.1.0
+  nuxt: ^4.7.0
   sass: 1.108.2
   storybook: 10.6.9
   typescript: ^7.0.2
   vite: npm:@voidzero-dev/vite-plus-core@8.3.8000
   vite-plus: 1.7.0
   vue: 3.5.46
+  vue-router: ^5.4.0
   vue-tsc: 3.3.14
 # Sass uses the watcher's platform binaries. Skip its optional native rebuild.
 allowBuilds:

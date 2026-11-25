@@ -32,10 +32,10 @@ The rule reports violations for manual correction. Arrows capture the surroundin
 
 ### Run the rule
 
-From the repository root, lint the website counter without editing it.
+From the repository root, lint the Vite host’s counter without editing it.
 
 ```sh
-pnpm exec vp lint apps/website/src/counter.ts
+pnpm exec vp lint apps/vite/src/counter.ts
 ```
 
 `vp check` runs the rule across the workspace. At commit time, `vp staged` runs lint on staged JavaScript, TypeScript and Vue files under `apps/` and `packages/`. An arrow-function error blocks the commit until it is corrected. [Pre-commit hook](../.vite-hooks/pre-commit)

@@ -30,7 +30,8 @@ export default defineConfig({
     overrides: [
       {
         files: [
-          '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}'
+          '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}',
+          'apps/nuxt/app/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}'
         ],
         rules: { 'import/no-default-export': 'error' }
       },
@@ -51,7 +52,8 @@ export default defineConfig({
   test: {
     coverage: {
       include: [
-        '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}'
+        '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}',
+        'apps/nuxt/app/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}'
       ],
       exclude: ['**/*.d.{ts,cts,mts}', '**/__tests__/**', '**/*.{test,spec,stories}.*'],
       reporter: [['text', { skipFull: false }], 'html']

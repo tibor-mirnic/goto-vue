@@ -1,0 +1,18 @@
+{
+  "name": "@goto/nuxt-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "vue:typecheck": "nuxt prepare && node ../../tooling/vue-tsc.cjs -b --noEmit"
+  },
+  "dependencies": {
+    "nuxt": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  }
+}

@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a vanilla TypeScript website in `apps/website` and three private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
+A Vite+ workspace with a Nuxt host in `apps/nuxt`, a vanilla TypeScript host in `apps/vite` and three private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
 
 ## First checkout
 
@@ -22,16 +22,37 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | `vp run infrastructure-ui:storybook:build` | Builds the static UI Storybook in `packages/infrastructure/ui/storybook-static/`.                                                                                   |
 | `vp run domain-palette:storybook`          | Starts the palette Storybook on port 6007 with the interactive palette viewer and local palette data.                                                               |
 | `vp run domain-palette:storybook:build`    | Builds the static palette Storybook in `packages/domain/palette/storybook-static/`.                                                                                 |
-| `vp run dev`                               | Starts the website dev server. Open the local URL it prints.                                                                                                        |
+| `vp run dev`                               | Starts the Vite dev server. Open the local URL it prints.                                                                                                           |
+| `vp run dev:nuxt`                          | Starts the Nuxt dev server. Open `/palette` directly or follow the redirect from `/`.                                                                               |
 | `vp check`                                 | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client and UI libraries have been built.                                         |
 | `vp run check`                             | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
 | `vp test run`                              | Runs all unit tests once from the root after the HTTP client and UI libraries have been built.                                                                      |
 | `vp run -r test`                           | Builds the palette’s HTTP client and UI dependencies and runs each package’s tests. The pre-push hook uses this command.                                            |
-| `vp run -r build`                          | Builds the website and libraries. The palette build checks Vue types and emits its module, declarations and stylesheet into `dist/`.                                |
+| `vp run -r build`                          | Builds the apps and libraries. The palette build checks Vue types and emits its module, declarations and stylesheet into `dist/`.                                   |
 | `vp run ready`                             | Builds first, then runs `vp run check` and the package tests. Use this for a clean checkout or a full local check.                                                  |
 | `vp run coverage`                          | Runs unit tests with V8 coverage across app and library source, including untested files. Prints a summary and writes the combined report to `coverage/index.html`. |
 
 Use arrow functions for implementations, including callbacks, object methods and class methods. Class constructors and property getters and setters use method syntax. The rule applies only to implementations. [Arrow-function lint rule and examples](tooling/README.md)
+
+## Host routes
+
+Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages/(private)/`. Nuxt omits parenthesized folder names from URLs, so `(public)/palette.vue` serves `/palette`. The root URL redirects there. [Nuxt route groups](https://nuxt.com/docs/4.x/directory-structure/app/pages#route-groups)
+
+The vanilla Vite host mounts `apps/vite/src/routes/public/HomeRoute.ts` directly from `src/main.ts` at startup. Its sibling `src/routes/private/` reserves space for future pages. When the host adopts Vue Router, explicit route records will map URLs to these files. Both hosts currently use the folders for organization only.
+
+## Adding an app
+
+From the repository root, use `pnpm exec vp create` with the framework generator and choose an unused name under `apps/`. For a new Vue app with Vite, `pnpm exec vp create vue` opens the official Vue starter. The existing vanilla TypeScript host in `apps/vite` came from renaming `apps/website`. [Vite+ generators](https://viteplus.dev/guide/create)
+
+The Nuxt host used the following command in a workspace where `apps/nuxt` was available. Vite+ selects `apps` as the parent directory. The first argument after `--` gives the Nuxt initializer the directory name `nuxt`, producing `apps/nuxt`.
+
+```sh
+pnpm exec vp create nuxt --no-interactive --no-agent --no-editor --no-hooks --package-manager pnpm -- nuxt -t minimal --no-install --no-modules --packageManager pnpm
+```
+
+1. Give the app a unique private package name, such as `@goto/nuxt-app`, so it can depend on the framework by its published name. Use `catalog:` for shared dependency versions and `workspace:*` for workspace libraries.
+2. Keep the host’s `dev` and `build` scripts in its package. Add a root development shortcut following the existing `vp run dev` (Vite) and `vp run dev:nuxt` (Nuxt) commands. The root `ready` script builds every app and runs workspace checks and tests.
+3. From the root, run `pnpm install` to update the shared `pnpm-lock.yaml`, then `pnpm install --frozen-lockfile` and `pnpm exec vp run ready` to verify the workspace. Start the new app with its development shortcut and open its entry route.
 
 ## Adding a package
 
@@ -60,11 +81,11 @@ pnpm exec vp run ready
 Installation runs the root `prepare` script to register the hooks in `.vite-hooks/`. If a hook fails to run, check `vp hooks status` for the installed dispatcher at `.vite-hooks/_` and the three project hooks. Run `vp run prepare` to repeat setup. For runtime or package-manager problems, the global CLI provides `vp env doctor`.
 
 - **Pre-commit** lints and formats staged JavaScript, TypeScript and Vue files under `apps/` and `packages/`, preserving unstaged edits. It merges duplicate imports and sorts named imports while preserving declaration order. Remove unused TypeScript imports manually. Use named exports in app and library source.
-- **Commit-msg** validates Angular-style messages with commitlint. Use an imperative subject and an optional lowercase scope, for example `docs: document the developer workflow` or `fix(website): update the counter label`.
+- **Commit-msg** validates Angular-style messages with commitlint. Use an imperative subject and an optional lowercase scope, for example `docs: document the developer workflow` or `fix(vite-app): update the counter label`.
 - **Pre-push** runs package unit tests. A failure blocks the push. Use `vp run -r test` to reproduce it.
 
 ## Tooling decisions
 
-- The website runs its TypeScript check uncached because cached native compiler results could miss incompatible changes. Consumers import each library through its package entry point. Relative imports across packages still need an ownership rule.
+- The Vite host runs its TypeScript check uncached because cached native compiler results could miss incompatible changes. Consumers import each library through its package entry point. Relative imports across packages still need an ownership rule.
 - The UI controls and the palette viewer have colocated Storybook stories. Each preview loads its library’s default Sass entry. Both explorers share Canvas and Docs theme settings from `tooling/storybook/`. Vue template checks and component tests run through the workspace checks.
 - Validate the packed library from a consumer before introducing a local registry such as Verdaccio. Release automation depends on a versioned artifact, owner and delivery target. The root test command supports CI once a provider is chosen.
