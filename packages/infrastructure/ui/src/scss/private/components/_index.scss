@@ -3,9 +3,9 @@
 @use 'lists';
 @use 'selects';
 
-@mixin load-goto-ui-components {
-  @include buttons.goto-ui-button;
-  @include labels.goto-ui-label;
-  @include lists.goto-ui-ul;
-  @include selects.goto-ui-select;
+@mixin load-goto-ui-components($theme, $variables, $color-palette) {
+  @include buttons.goto-ui-button($theme, $variables, $color-palette);
+  @include labels.goto-ui-label($theme, $variables, $color-palette);
+  @include lists.goto-ui-ul($theme, $variables, $color-palette);
+  @include selects.goto-ui-select($theme, $variables, $color-palette);
 }

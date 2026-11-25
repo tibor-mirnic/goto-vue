@@ -10,11 +10,14 @@ catalogMode: prefer
 catalog:
   '@commitlint/cli': ^21.2.4
   '@commitlint/config-angular': ^21.2.4
+  '@storybook/addon-docs': 10.6.9
+  '@storybook/vue3-vite': 10.6.9
   '@types/node': ^26.6.5
   '@typescript/typescript6': 6.0.2
   '@vitejs/plugin-vue': 6.0.11
   '@vitest/coverage-v8': 5.1.0
   sass: 1.108.2
+  storybook: 10.6.9
   typescript: ^7.0.2
   vite: npm:@voidzero-dev/vite-plus-core@8.3.8000
   vite-plus: 1.7.0
@@ -23,6 +26,16 @@ catalog:
 # Sass uses the watcher's platform binaries. Skip its optional native rebuild.
 allowBuilds:
   '@parcel/watcher': false
+  # esbuild resolves its platform binary from its optional dependency.
+  esbuild: false
 
 overrides:
   vite@*: 'catalog:'
+
+minimumReleaseAgeExclude:
+  - '@storybook/addon-docs@10.6.9'
+  - '@storybook/builder-vite@10.6.9'
+  - '@storybook/react-dom-shim@10.6.9'
+  - '@storybook/vue3-vite@10.6.9'
+  - '@storybook/vue3@10.6.9'
+  - storybook@10.6.9

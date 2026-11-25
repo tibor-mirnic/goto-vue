@@ -1,6 +1,35 @@
-@mixin goto-ui-select {
+@use 'sass:map';
+@use '../color';
+
+@mixin goto-ui-select($theme, $variables, $color-palette) {
   .goto-ui-select {
     max-width: 100%;
-    font: inherit;
+    min-height: map.get($variables, control, min-height);
+    padding: 0.5em 0.75em;
+    border: 1px solid color.themed(border, $theme, $color-palette);
+    border-radius: map.get($variables, control, border-radius);
+    color-scheme: var(--goto-ui-color-scheme);
+    background-color: color.themed(surface, $theme, $color-palette);
+    color: color.themed(on-surface, $theme, $color-palette);
+    font:
+      500 1rem/1.4 system-ui,
+      sans-serif;
+    cursor: pointer;
+
+    &:enabled:hover {
+      border-color: color.themed(accent, $theme, $color-palette);
+    }
+
+    &:focus-visible {
+      outline: 3px solid color.themed(accent, $theme, $color-palette);
+      outline-offset: 3px;
+    }
+
+    &:disabled {
+      background-color: color.themed(disabled-surface, $theme, $color-palette);
+      color: color.themed(disabled-text, $theme, $color-palette);
+      opacity: 1;
+      cursor: not-allowed;
+    }
   }
 }

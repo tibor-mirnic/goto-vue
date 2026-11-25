@@ -1,10 +1,37 @@
+@use 'sass:map';
+@use '../private/base';
 @use '../private/components';
-@use 'light';
+@use '../public/variables';
+@use 'goto-ui-theme' as ui;
 
-@mixin load-goto-ui-styles {
-  :where(:root) {
-    @include light.theme;
+@mixin load-goto-ui-styles($variables: (), $light-roles: (), $dark-roles: (), $color-palette: ()) {
+  $variables: map.deep-merge(variables.$goto-ui-variables, $variables);
+  $color-palette: map.merge(variables.$color-palette, $color-palette);
+  $light-theme: map.merge(variables.$theme-light, $light-roles);
+  @if not map.has-key($light-roles, text) {
+    $light-theme: map.set($light-theme, text, map.get($light-theme, on-surface));
+  }
+  $settings: (
+    label-gap: map.get($variables, spacing, label-gap),
+    list-indent: map.get($variables, spacing, list-indent),
+    color-palette: $color-palette
+  );
+
+  @include base.load-goto-ui-base;
+
+  :where(:root, [data-goto-ui-theme='light']) {
+    @include ui.theme($roles: $light-theme, $settings...);
   }
 
-  @include components.load-goto-ui-components;
+  @media (prefers-color-scheme: dark) {
+    :where(:root:not([data-goto-ui-theme='light'])) {
+      @include ui.theme($scheme: dark, $roles: $dark-roles, $settings...);
+    }
+  }
+
+  :where([data-goto-ui-theme='dark']) {
+    @include ui.theme($scheme: dark, $roles: $dark-roles, $settings...);
+  }
+
+  @include components.load-goto-ui-components($light-theme, $variables, $color-palette);
 }

@@ -33,7 +33,8 @@ export default defineConfig({
           '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}'
         ],
         rules: { 'import/no-default-export': 'error' }
-      }
+      },
+      { files: ['**/*.stories.ts'], rules: { 'import/no-default-export': 'off' } }
     ],
     options: { typeAware: true, typeCheck: true }
   },
@@ -52,7 +53,7 @@ export default defineConfig({
       include: [
         '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}'
       ],
-      exclude: ['**/*.d.{ts,cts,mts}', '**/__tests__/**', '**/*.{test,spec}.*'],
+      exclude: ['**/*.d.{ts,cts,mts}', '**/__tests__/**', '**/*.{test,spec,stories}.*'],
       reporter: [['text', { skipFull: false }], 'html']
     }
   },

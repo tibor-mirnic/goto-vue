@@ -1,0 +1,6 @@
+@use 'sass:map';
+
+@function themed($role, $theme, $color-palette) {
+  $token: map.get($theme, $role);
+  @return var(--goto-ui-#{$role}-color, #{map.get($color-palette, $token)});
+}

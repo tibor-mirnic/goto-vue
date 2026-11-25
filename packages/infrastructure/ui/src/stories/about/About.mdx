@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Styleguide/About" />
+
+# Infrastructure UI
+
+`@goto/infrastructure-ui` provides Vue components for native labels, buttons, single-select fields and unordered lists. Open a component’s Docs page for usage examples. In Canvas, use Controls to edit the example and try the native interactions.
+
+## Using the components
+
+Import components from the package root and load the default stylesheet once in your application.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { UiLabel, UiSelect } from '@goto/infrastructure-ui';
+import '@goto/infrastructure-ui/style.css';
+
+const size = ref('');
+</script>
+
+<template>
+  <UiLabel for="size">Size</UiLabel>
+  <UiSelect id="size" v-model="size">
+    <option disabled value="">Choose a size</option>
+    <option value="small">Small</option>
+    <option value="large">Large</option>
+  </UiSelect>
+</template>
+```
+
+## Previewing themes
+
+Use the theme menu in the toolbar to switch the appearance of Canvas and Docs, including this page, controls tables and live examples. **System** tracks your OS preference as it changes. Choose **Light** or **Dark** to hold a fixed appearance. Storybook’s navigation keeps its own theme.
+
+The packaged stylesheet follows the same system preference. Set `data-goto-ui-theme="dark"` or `data-goto-ui-theme="light"` on `html` or a component container to choose explicitly. Remove the attribute to inherit the surrounding theme. The stylesheet applies `box-sizing: border-box` to every element and its `::before` and `::after` pseudo-elements across the document.
+
+## Customizing a theme
+
+Use the same Sass mixin with `$scheme: light` or `$scheme: dark` to theme a subtree. Set spacing and color overrides alongside the scheme.
+
+```scss
+@use '@goto/infrastructure-ui/styles.scss' as ui;
+
+.controls {
+  @include ui.theme($scheme: light, $label-gap: 0.5rem);
+}
+
+.controls-preview {
+  @include ui.theme(
+    $scheme: dark,
+    $roles: (
+      accent: lavender
+    ),
+    $color-palette: (
+      lavender: #d4c6ff
+    )
+  );
+}
+```

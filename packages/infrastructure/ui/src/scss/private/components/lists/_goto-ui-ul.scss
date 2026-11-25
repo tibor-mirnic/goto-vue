@@ -1,6 +1,29 @@
-@mixin goto-ui-ul {
+@use 'sass:map';
+@use '../color';
+
+@mixin goto-ui-ul($theme, $variables, $color-palette) {
   .goto-ui-ul {
     margin: 0;
-    padding-inline-start: var(--goto-ui-list-indent);
+    padding-inline-start: var(--goto-ui-list-indent, #{map.get($variables, spacing, list-indent)});
+    color: color.themed(text, $theme, $color-palette);
+    font:
+      400 1rem/1.5 system-ui,
+      sans-serif;
+
+    &:has(> li) {
+      padding-block: 0.5rem;
+      padding-inline-end: 1rem;
+      border-inline-start: 3px solid color.themed(accent, $theme, $color-palette);
+      border-radius: 0.25rem;
+      background-color: color.themed(surface, $theme, $color-palette);
+    }
+
+    > li::marker {
+      color: color.themed(accent, $theme, $color-palette);
+    }
+
+    > li + li {
+      margin-block-start: 0.25em;
+    }
   }
 }

@@ -1,11 +1,49 @@
 @use 'sass:map';
 
 $color-palette: (
-  current: currentColor
+  current: currentColor,
+  white: #fff,
+  indigo-100: #e3e8ff,
+  indigo-300: #a9baff,
+  indigo-600: #4455cf,
+  indigo-800: #303eaa,
+  slate-50: #f4f6fc,
+  slate-200: #e1e5ef,
+  slate-300: #c4ccdf,
+  slate-500: #737e96,
+  slate-600: #515c74,
+  slate-700: #39435a,
+  slate-800: #252f45,
+  slate-900: #172033
 );
+
 $theme-light: (
-  text: current
+  text: current,
+  accent: indigo-600,
+  accent-hover: indigo-800,
+  on-accent: white,
+  surface: white,
+  on-surface: slate-900,
+  border: slate-500,
+  canvas: slate-50,
+  disabled-surface: slate-200,
+  disabled-text: slate-600
 );
-$palette: (
-  text: map.get($color-palette, map.get($theme-light, text))
+
+$theme-dark: (
+  text: slate-50,
+  accent: indigo-300,
+  accent-hover: indigo-100,
+  on-accent: slate-900,
+  surface: slate-800,
+  on-surface: slate-50,
+  border: slate-500,
+  canvas: slate-900,
+  disabled-surface: slate-700,
+  disabled-text: slate-300
 );
+
+$palette: ();
+@each $role, $color in $theme-light {
+  $palette: map.set($palette, $role, map.get($color-palette, $color));
+}

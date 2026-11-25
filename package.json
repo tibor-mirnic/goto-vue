@@ -7,7 +7,9 @@
     "prepare": "vp config --no-agent",
     "ready": "vp run -r build && vp run check && vp run -r test",
     "dev": "vp run website#dev",
-    "check": "vp run -r vue:typecheck && vp check"
+    "check": "vp run -r vue:typecheck && vp check",
+    "infrastructure-ui:storybook": "vp run @goto/infrastructure-ui#storybook",
+    "infrastructure-ui:storybook:build": "vp run @goto/infrastructure-ui#build-storybook"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",

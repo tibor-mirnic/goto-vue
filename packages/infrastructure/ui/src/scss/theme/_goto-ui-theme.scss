@@ -1,8 +1,34 @@
 @use 'sass:map';
-@use '../public';
+@use '../public/variables';
 
-@mixin load-goto-ui-theme($theme, $goto-ui-variables, $color-palette) {
-  @include public.palette(map.get($color-palette, map.get($theme, text)));
-  --goto-ui-label-gap: #{map.get($goto-ui-variables, spacing, label-gap)};
-  --goto-ui-list-indent: #{map.get($goto-ui-variables, spacing, list-indent)};
+$-themes: (
+  light: variables.$theme-light,
+  dark: variables.$theme-dark
+);
+
+@mixin theme(
+  $label-gap: variables.$label-gap,
+  $list-indent: variables.$list-indent,
+  $text-color: null,
+  $scheme: light,
+  $roles: (),
+  $color-palette: ()
+) {
+  @if not map.has-key($-themes, $scheme) {
+    @error 'Unknown UI color scheme "#{$scheme}". Choose light or dark.';
+  }
+
+  $colors: map.merge(variables.$color-palette, $color-palette);
+  --goto-ui-color-scheme: #{$scheme};
+
+  @each $role, $token in map.merge(map.get($-themes, $scheme), $roles) {
+    $value: map.get($colors, $token);
+    @if $role == text and $text-color != null {
+      $value: $text-color;
+    }
+    --goto-ui-#{$role}-color: #{$value};
+  }
+
+  --goto-ui-label-gap: #{$label-gap};
+  --goto-ui-list-indent: #{$list-indent};
 }

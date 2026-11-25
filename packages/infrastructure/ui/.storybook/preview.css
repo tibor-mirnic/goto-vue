@@ -1,0 +1,7 @@
+body.sb-show-main,
+.docs-story {
+  color-scheme: var(--goto-ui-color-scheme);
+  background-color: var(--goto-ui-canvas-color);
+  color: var(--goto-ui-text-color);
+  font-family: system-ui, sans-serif;
+}

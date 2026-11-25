@@ -24,12 +24,17 @@
     "watch:runtime": "vp build --watch --no-emptyOutDir",
     "watch:types": "vp run declarations --watch",
     "test": "vp test",
-    "check": "vp check && vp run vue:typecheck"
+    "check": "vp check && vp run vue:typecheck",
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/vue3-vite": "catalog:",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "sass": "catalog:",
+    "storybook": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:",
     "vue": "catalog:"
