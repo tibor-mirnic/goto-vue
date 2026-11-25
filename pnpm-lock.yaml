@@ -242,6 +242,12 @@ importers:
       '@commitlint/config-angular':
         specifier: 'catalog:'
         version: 21.2.4
+      '@storybook/addon-docs':
+        specifier: 'catalog:'
+        version: 10.6.9(@types/react@19.3.1)(storybook@10.6.9(@types/react@19.3.1)(react@19.3.1)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2))))
+      '@storybook/vue3-vite':
+        specifier: 'catalog:'
+        version: 10.6.9(@voidzero-dev/vite-plus-core@8.3.8000(@types/node@26.6.6)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2)))(storybook@10.6.9(@types/react@19.3.1)(react@19.3.1)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2))))(typescript@7.0.2)(vue@3.5.46(typescript@7.0.2))
       '@typescript/typescript6':
         specifier: 'catalog:'
         version: 6.0.2
@@ -251,6 +257,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 5.1.0(@vitest/browser@5.1.0)(vitest@5.1.0)
+      storybook:
+        specifier: 'catalog:'
+        version: 10.6.9(@types/react@19.3.1)(react@19.3.1)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2)))
       vite-plus:
         specifier: 'catalog:'
         version: 1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2))
@@ -279,6 +288,12 @@ importers:
         specifier: workspace:*
         version: link:../../infrastructure/ui
     devDependencies:
+      '@storybook/addon-docs':
+        specifier: 'catalog:'
+        version: 10.6.9(@types/react@19.3.1)(storybook@10.6.9(@types/react@19.3.1)(react@19.3.1)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2))))
+      '@storybook/vue3-vite':
+        specifier: 'catalog:'
+        version: 10.6.9(@voidzero-dev/vite-plus-core@8.3.8000(@types/node@26.6.6)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2)))(storybook@10.6.9(@types/react@19.3.1)(react@19.3.1)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2))))(typescript@7.0.2)(vue@3.5.46(typescript@7.0.2))
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.6
@@ -288,6 +303,9 @@ importers:
       sass:
         specifier: 'catalog:'
         version: 1.108.2
+      storybook:
+        specifier: 'catalog:'
+        version: 10.6.9(@types/react@19.3.1)(react@19.3.1)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2)))
       typescript:
         specifier: 'catalog:'
         version: 7.0.2

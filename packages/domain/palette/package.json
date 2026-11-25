@@ -31,9 +31,12 @@
     "@goto/infrastructure-ui": "workspace:*"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/vue3-vite": "catalog:",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "sass": "catalog:",
+    "storybook": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:",
     "vue": "catalog:"

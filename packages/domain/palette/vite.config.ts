@@ -15,6 +15,8 @@ export default defineConfig({
   },
   run: {
     tasks: {
+      storybook: { command: 'storybook dev -p 6007 --no-open', dependsOn: dependencyBuilds, cache: false },
+      'build-storybook': { command: 'storybook build', dependsOn: dependencyBuilds, cache: false },
       unit: { command: 'vp test', dependsOn: dependencyBuilds },
       // The compiler reads templates and imported types outside Vite Task's input tracking.
       'vue:typecheck': {

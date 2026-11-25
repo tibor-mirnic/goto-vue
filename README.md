@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a vanilla TypeScript website in `apps/website` and three private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet and usage.
+A Vite+ workspace with a vanilla TypeScript website in `apps/website` and three private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
 
 ## First checkout
 
@@ -20,6 +20,8 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `vp run infrastructure-ui:storybook`       | Starts the UI Storybook on port 6006 with live Vue components, controls and documentation.                                                                          |
 | `vp run infrastructure-ui:storybook:build` | Builds the static UI Storybook in `packages/infrastructure/ui/storybook-static/`.                                                                                   |
+| `vp run domain-palette:storybook`          | Starts the palette Storybook on port 6007 with the interactive palette viewer and local palette data.                                                               |
+| `vp run domain-palette:storybook:build`    | Builds the static palette Storybook in `packages/domain/palette/storybook-static/`.                                                                                 |
 | `vp run dev`                               | Starts the website dev server. Open the local URL it prints.                                                                                                        |
 | `vp check`                                 | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client and UI libraries have been built.                                         |
 | `vp run check`                             | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
@@ -64,5 +66,5 @@ Installation runs the root `prepare` script to register the hooks in `.vite-hook
 ## Tooling decisions
 
 - The website runs its TypeScript check uncached because cached native compiler results could miss incompatible changes. Consumers import each library through its package entry point. Relative imports across packages still need an ownership rule.
-- Shared UI components have colocated Storybook stories. The preview loads the same default Sass entry as the library. Vue template checks and component tests run through the workspace checks.
+- The UI controls and the palette viewer have colocated Storybook stories. Each preview loads its library’s default Sass entry. Both explorers share Canvas and Docs theme settings from `tooling/storybook/`. Vue template checks and component tests run through the workspace checks.
 - Validate the packed library from a consumer before introducing a local registry such as Verdaccio. Release automation depends on a versioned artifact, owner and delivery target. The root test command supports CI once a provider is chosen.
