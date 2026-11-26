@@ -6,7 +6,11 @@ export default defineConfig({
   run: {
     tasks: {
       // The checker reads imported types and templates outside task input tracking.
-      'vue:typecheck': { command: 'node ../../tooling/vue-tsc.cjs -p tsconfig.vue.json', cache: false }
+      'vue:typecheck': {
+        command: 'node ../../tooling/vue-tsc.cjs -p tsconfig.vue.json',
+        dependsOn: ['@goto/domain-palette#build'],
+        cache: false
+      }
     }
   }
 });

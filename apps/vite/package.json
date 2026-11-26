@@ -4,11 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp run @goto/domain-palette#build && vp dev",
     "build": "vp run vue:typecheck && vp build",
     "preview": "vp preview"
   },
   "dependencies": {
+    "@goto/domain-palette": "workspace:*",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },

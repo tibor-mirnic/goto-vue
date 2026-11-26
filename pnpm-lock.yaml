@@ -290,6 +290,9 @@ importers:
 
   apps/vite:
     dependencies:
+      '@goto/domain-palette':
+        specifier: workspace:*
+        version: link:../../packages/domain/palette
       vue:
         specifier: 'catalog:'
         version: 3.5.46(typescript@7.0.2)

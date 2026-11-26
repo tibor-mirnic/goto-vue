@@ -22,7 +22,7 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | `vp run infrastructure-ui:storybook:build` | Builds the static UI Storybook in `packages/infrastructure/ui/storybook-static/`.                                                                                   |
 | `vp run domain-palette:storybook`          | Starts the palette Storybook on port 6007 with the interactive palette viewer and local palette data.                                                               |
 | `vp run domain-palette:storybook:build`    | Builds the static palette Storybook in `packages/domain/palette/storybook-static/`.                                                                                 |
-| `vp run dev`                               | Starts the Vite dev server. Open the local URL it prints.                                                                                                           |
+| `vp run dev`                               | Starts the Vue Router host. Open `/palette` directly or follow the redirect from `/`.                                                                               |
 | `vp run dev:nuxt`                          | Starts the Nuxt dev server. Open `/palette` directly or follow the redirect from `/`.                                                                               |
 | `vp check`                                 | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client and UI libraries have been built.                                         |
 | `vp run check`                             | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
@@ -38,9 +38,11 @@ Use arrow functions for implementations, including callbacks, object methods and
 
 Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages/(private)/`. Nuxt omits parenthesized folder names from URLs, so `(public)/palette.vue` serves `/palette`. The root URL redirects there. [Nuxt route groups](https://nuxt.com/docs/4.x/directory-structure/app/pages#route-groups)
 
-Run `vp run dev:nuxt` from the workspace root and open `/palette`. Selecting a palette loads `/palettes/<name>.json` from the Nuxt host’s `apps/nuxt/public/palettes/` directory. Each file contains a JSON array of nonblank color names. Selecting `aurora` lists `indigo` and `harbor blue`. Selecting `mist` loads an empty array (`[]`) and displays “No colors in mist”.
+Run `vp run dev` for Vite or `vp run dev:nuxt` for Nuxt from the workspace root. Open `/palette` at the local URL printed by the server. Both hosts serve palette data from their own `public/palettes/` directory. Each file contains a JSON array of nonblank color names. Selecting `aurora` loads `/palettes/aurora.json` and lists `indigo` followed by `harbor blue`. Selecting `mist` loads `/palettes/mist.json`, an empty array (`[]`), and displays “No colors in mist”.
 
-The Vite host installs Vue Router in `apps/vite/src/main.ts` and renders the matched route in `App.vue`. The route table in `src/router.ts` redirects `/` to `/palette` and lazy-loads `src/routes/public/PaletteRoute.vue`. The sibling `src/routes/private/` directory reserves space for future pages.
+The Vite host installs Vue Router in `apps/vite/src/main.ts` and renders the matched route in `App.vue`. The route table in `src/router.ts` redirects `/` to `/palette` and lazy-loads `src/routes/public/PaletteRoute.vue`. This route imports the palette module and its compiled stylesheet. The sibling `src/routes/private/` directory reserves space for future pages.
+
+To deploy the Vite host, run `vp run @goto/vite-app#build` and serve `apps/vite/dist/` at the site root. Serve static files first, including `/assets/` and `/palettes/*.json`. Configure the host to fall back to `index.html` for client routes so direct visits and reloads at `/palette` reach Vue Router.
 
 ## Adding an app
 

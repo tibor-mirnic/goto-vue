@@ -1,5 +1,9 @@
+<script setup lang="ts">
+import { PaletteModule } from '@goto/domain-palette';
+</script>
+
 <template>
-  <main>
-    <h1>Palettes</h1>
-  </main>
+  <PaletteModule />
 </template>
+
+<style src="@goto/domain-palette/style.css"></style>
