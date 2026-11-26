@@ -7,7 +7,10 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: { index: 'entry.js', 'index.server': 'src/index.server.ts' },
+      entry: {
+        index: 'entry.js',
+        'index.server': 'src/api/server/index.ts'
+      },
       formats: ['es'],
       cssFileName: 'style'
     },

@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vite-plus/test';
-import { readFixturePaletteColors } from '../../../server/palette-fixture.source.ts';
+import { readFixturePaletteColors } from '../palette-fixture.source.ts';
 import { getPalette } from '../palettes.api.ts';
 
 test('returns the ordered Aurora colors in a serializable result', async () => {

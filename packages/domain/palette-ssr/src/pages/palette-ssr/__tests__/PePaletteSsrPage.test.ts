@@ -1,23 +1,10 @@
 import { expect, onTestFinished, test, vi } from 'vite-plus/test';
 import { createRenderer, h, nextTick, shallowRef } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { PaletteSsrModule } from '@goto/domain-palette-ssr';
+import { type PaletteName, type PaletteViewerState, PePaletteSsrPage } from '@goto/domain-palette-ssr';
 
-type PaletteViewerProps = Pick<
-  InstanceType<typeof PaletteSsrModule>['$props'],
-  'selectedPalette' | 'status' | 'result'
->;
-
-const aurora = {
-  selectedPalette: 'aurora',
-  status: 'ready',
-  result: { palette: 'aurora', colors: ['indigo', 'harbor blue'] }
-} satisfies PaletteViewerProps;
-const mist = {
-  selectedPalette: 'mist',
-  status: 'ready',
-  result: { palette: 'mist', colors: [] }
-} satisfies PaletteViewerProps;
+const aurora = { status: 'ready', palette: 'aurora', colors: ['indigo', 'harbor blue'] } satisfies PaletteViewerState;
+const mist = { status: 'ready', palette: 'mist', colors: [] } satisfies PaletteViewerState;
 
 type Node = {
   tag: string;
@@ -68,39 +55,24 @@ const elements = (node: Node, tag: string): Node[] => [
 ];
 const textContent = (node: Node): string => node.text + node.children.map(textContent).join('');
 
-const mountModule = (initialProps: PaletteViewerProps) => {
-  const props = shallowRef(initialProps);
-  const onSelect = vi.fn();
-  const onRetry = vi.fn();
+const mountPage = (getProps: () => InstanceType<typeof PePaletteSsrPage>['$props']) => {
   const root = createNode('root');
-  const app = renderer.createApp({ render: () => h(PaletteSsrModule, { ...props.value, onSelect, onRetry }) });
+  const app = renderer.createApp({ render: () => h(PePaletteSsrPage, getProps()) });
   app.mount(root);
   onTestFinished(() => app.unmount());
-
-  const update = async (nextProps: PaletteViewerProps) => {
-    props.value = nextProps;
-    await nextTick();
-  };
-
-  return { root, update, onSelect, onRetry };
+  return root;
 };
 
-test('SSR renders the supplied selection and ordered list without a request', async () => {
-  const request = vi.fn<typeof fetch>();
-  vi.stubGlobal('fetch', request);
-  onTestFinished(() => {
-    vi.unstubAllGlobals();
-  });
-
-  const html = await renderToString(h(PaletteSsrModule, aurora));
+test('SSR renders the supplied selection and colors in order', async () => {
+  const html = await renderToString(h(PePaletteSsrPage, { state: aurora }));
 
   expect(html).toContain('<option value="aurora" selected>aurora</option>');
   expect(html.match(/<li[^>]*>[^<]+<\/li>/g)).toEqual(['<li>indigo</li>', '<li>harbor blue</li>']);
-  expect(request).not.toHaveBeenCalled();
 });
 
-test('SSR renders a distinct label association for each mounted module', async () => {
-  const html = await renderToString(h('div', [h(PaletteSsrModule, aurora), h(PaletteSsrModule, mist)]));
+test('SSR renders a distinct label association for each mounted page', async () => {
+  const page = () => h(PePaletteSsrPage, { state: aurora });
+  const html = await renderToString(h('div', [page(), page()]));
   const targets = Array.from(html.matchAll(/<label[^>]+\bfor="([^"]+)"/g), ([, target]) => target);
   const ids = Array.from(html.matchAll(/<select[^>]+\bid="([^"]+)"/g), ([, id]) => id);
 
@@ -108,48 +80,55 @@ test('SSR renders a distinct label association for each mounted module', async (
   expect(new Set(ids).size).toBe(2);
 });
 
-test('updates from host props and suppresses older results while the selection changes', async () => {
-  const { root, update } = mountModule(aurora);
+test('mounts synchronously and renders each host state as the prop changes', async () => {
+  const state = shallowRef<PaletteViewerState>(aurora);
+  const root = mountPage(() => ({ state: state.value }));
   const list = () => elements(root, 'li').map(textContent);
   const status = () => textContent(elements(root, 'div').find((node) => node.props.role === 'status')!);
 
+  expect(status()).toBe('Colors in aurora');
   expect(list()).toEqual(['indigo', 'harbor blue']);
 
-  await update({ ...aurora, status: 'pending' });
-  expect(status()).toBe('Loading aurora…');
-  expect(list()).toEqual([]);
-
-  await update({ ...mist, result: aurora.result });
+  state.value = { status: 'pending', palette: 'mist' };
+  await nextTick();
   expect(status()).toBe('Loading mist…');
   expect(elements(root, 'select')[0].props.value).toBe('mist');
   expect(list()).toEqual([]);
 
-  await update(mist);
-  expect(status()).toBe('No colors in mist');
-  expect(list()).toEqual([]);
-
-  await update({ ...mist, status: 'error' });
+  state.value = { status: 'error', palette: 'mist' };
+  await nextTick();
   expect(status()).toBe('Could not load mist.');
   expect(elements(root, 'button').map(textContent)).toEqual(['Retry']);
 
-  await update(aurora);
-  expect(list()).toEqual(['indigo', 'harbor blue']);
+  state.value = mist;
+  await nextTick();
+  expect(status()).toBe('No colors in mist');
+  expect(list()).toEqual([]);
   expect(elements(root, 'button')).toEqual([]);
 });
 
-test('forwards one valid selection and one retry to the host', () => {
-  const { root, onSelect, onRetry } = mountModule({ ...aurora, status: 'error' });
+test('forwards selection and retry intents while the host controls state', async () => {
+  const state = shallowRef<PaletteViewerState>({ status: 'error', palette: 'aurora' });
+  const onSelect = vi.fn<(palette: PaletteName) => void>();
+  const onRetry = vi.fn<() => void>();
+  const root = mountPage(() => ({ state: state.value, onSelect, onRetry }));
   const [select] = elements(root, 'select');
   const change = select.props.onChange as (event: { currentTarget: { value: string } }) => void;
 
-  change({ currentTarget: { value: 'mist' } });
-  change({ currentTarget: { value: 'unsupported' } });
   change({ currentTarget: { value: 'aurora' } });
+  change({ currentTarget: { value: 'unsupported' } });
+  expect(onSelect).not.toHaveBeenCalled();
 
+  change({ currentTarget: { value: 'mist' } });
   expect(onSelect.mock.calls).toEqual([['mist']]);
   expect(select.props.value).toBe('aurora');
+
+  state.value = { status: 'error', palette: 'mist' };
+  await nextTick();
+  expect(select.props.value).toBe('mist');
 
   const click = elements(root, 'button')[0].props.onClick as () => void;
   click();
   expect(onRetry.mock.calls).toEqual([[]]);
+  expect(elements(root, 'button').map(textContent)).toEqual(['Retry']);
 });

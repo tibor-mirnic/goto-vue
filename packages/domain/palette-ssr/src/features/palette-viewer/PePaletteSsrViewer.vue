@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { UiButton, UiLabel, UiSelect, UiUl } from '@goto/infrastructure-ui';
-import { usePaletteSsrViewerControls } from './usePaletteSsrViewerControls.ts';
+import { usePaletteSsrViewerControls } from './composables/usePaletteSsrViewerControls.ts';
 
 const { palettes, state, selectedPalette, selectId, retry } = usePaletteSsrViewerControls();
 </script>

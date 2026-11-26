@@ -1,2 +1,2 @@
 import './src/style.scss';
-export { PaletteSsrModule } from './src/index.ts';
+export { PePaletteSsrPage } from './src/index.ts';

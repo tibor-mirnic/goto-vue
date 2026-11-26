@@ -1,29 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { type ComponentOptions, h, reactive } from 'vue';
-import type { PaletteName, PaletteResult } from '../../api/palettes/palettes.api.models.ts';
+import { type ComponentOptions, h, shallowRef } from 'vue';
+import type { PaletteName } from '../../api/palette.models.ts';
 import PePaletteSsrViewer from './PePaletteSsrViewer.vue';
-import type { PaletteViewerProps } from './palette-viewer.models.ts';
+import type { PaletteViewerState } from './palette-viewer.models.ts';
 import { providePaletteSsrViewer } from './palette-viewer.provider.ts';
 
-const exampleResults = {
-  aurora: { palette: 'aurora', colors: ['indigo', 'harbor blue'] },
-  mist: { palette: 'mist', colors: [] }
-} as const satisfies Record<PaletteName, PaletteResult>;
+const exampleColors = {
+  aurora: ['indigo', 'harbor blue'],
+  mist: []
+} as const satisfies Record<PaletteName, readonly string[]>;
 
-const renderViewer = (selectedPalette: PaletteName, status: PaletteViewerProps['status']) => () => ({
+const renderViewer = (palette: PaletteName, status: PaletteViewerState['status']) => () => ({
   setup: () => {
-    const state = reactive({
-      selectedPalette,
-      status,
-      result: status === 'ready' ? exampleResults[selectedPalette] : null
-    });
+    const state = shallowRef<PaletteViewerState>(
+      status === 'ready' ? { status, palette, colors: exampleColors[palette] } : { status, palette }
+    );
     const select = (palette: PaletteName) => {
-      state.selectedPalette = palette;
-      state.result = exampleResults[palette];
-      state.status = 'ready';
+      state.value = { status: 'ready', palette, colors: exampleColors[palette] };
     };
 
-    providePaletteSsrViewer(state, select, () => select(state.selectedPalette));
+    providePaletteSsrViewer({ state, select, retry: () => select(state.value.palette) });
     return () => h(PePaletteSsrViewer);
   }
 });
@@ -36,7 +32,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'PePaletteSsrPage provides the selected palette, request status and result to the viewer during setup. Each story uses the same provider and owns its own state. The examples handle selection and retry using local palette data.'
+          'PePaletteSsrPage provides the host’s viewer state and forwards selection and retry events. Each story uses the same provider with local palette data.'
       }
     }
   }

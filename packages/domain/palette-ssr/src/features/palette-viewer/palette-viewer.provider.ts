@@ -1,24 +1,17 @@
-import { type InjectionKey, computed, inject, provide } from 'vue';
-import { type PaletteName, paletteNames } from '../../api/palettes/palettes.api.models.ts';
-import type { PaletteViewerProps } from './palette-viewer.models.ts';
+import { type InjectionKey, type Ref, inject, provide } from 'vue';
+import { type PaletteName, paletteNames } from '../../api/palette.models.ts';
+import type { PaletteViewerState } from './palette-viewer.models.ts';
 
-const key: InjectionKey<ReturnType<typeof providePaletteSsrViewer>> = Symbol('SSR palette viewer');
+type PaletteViewer = {
+  readonly state: Readonly<Ref<PaletteViewerState>>;
+  readonly select: (palette: PaletteName) => void;
+  readonly retry: () => void;
+};
 
-export const providePaletteSsrViewer = (
-  props: PaletteViewerProps,
-  select: (palette: PaletteName) => void,
-  retry: () => void
-) => {
-  const state = computed(() => {
-    const { selectedPalette: palette, status, result } = props;
-    if (status === 'error') return { status, palette } as const;
-    if (status === 'ready' && result?.palette === palette) return { status, palette, colors: result.colors } as const;
-    return { status: 'pending', palette } as const;
-  });
+const key: InjectionKey<PaletteViewer & { readonly palettes: typeof paletteNames }> = Symbol('SSR palette viewer');
 
-  const viewer = { state, select, retry, palettes: paletteNames };
-  provide(key, viewer);
-  return viewer;
+export const providePaletteSsrViewer = (viewer: PaletteViewer) => {
+  provide(key, { ...viewer, palettes: paletteNames });
 };
 
 export const usePaletteSsrViewer = () => {

@@ -13,7 +13,7 @@
       "import": "./dist/index.js"
     },
     "./server": {
-      "types": "./dist/index.server.d.ts",
+      "types": "./dist/api/server/index.d.ts",
       "import": "./dist/index.server.js"
     },
     "./style.css": "./dist/style.css"

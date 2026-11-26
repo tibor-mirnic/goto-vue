@@ -1,6 +1,6 @@
 import { computed, useId } from 'vue';
-import { isPaletteName } from '../../api/palettes/palettes.api.models.ts';
-import { usePaletteSsrViewer } from './palette-viewer.provider.ts';
+import { isPaletteName } from '../../../api/palette.models.ts';
+import { usePaletteSsrViewer } from '../palette-viewer.provider.ts';
 
 export const usePaletteSsrViewerControls = () => {
   const { palettes, state, select, retry } = usePaletteSsrViewer();

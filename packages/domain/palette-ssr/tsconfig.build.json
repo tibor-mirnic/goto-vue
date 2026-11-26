@@ -7,5 +7,5 @@
     "emitDeclarationOnly": true,
     "noEmitOnError": true
   },
-  "include": ["src/index.ts", "src/index.server.ts"]
+  "include": ["src/index.ts", "src/api/server/index.ts"]
 }

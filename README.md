@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a Nuxt host in `apps/nuxt`, a Vue Router host in `apps/vite` and four private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and Storybook. The [SSR palette package](packages/domain/palette-ssr/README.md) provides `PaletteSsrModule` for host-supplied state and a separate palette read for server code.
+A Vite+ workspace with a Nuxt host in `apps/nuxt`, a Vue Router host in `apps/vite` and four private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and Storybook. The SSR palette package provides `PePaletteSsrPage` for host-supplied view state and a separate palette read for server code. [SSR palette package](packages/domain/palette-ssr/README.md)
 
 ## First checkout
 
@@ -41,6 +41,8 @@ Use arrow functions for implementations, including callbacks, object methods and
 Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages/(private)/`. Nuxt omits parenthesized folder names from URLs, so `(public)/palette.vue` serves `/palette`. The root URL redirects there. [Nuxt route groups](https://nuxt.com/docs/4.x/directory-structure/app/pages#route-groups)
 
 Run `vp run dev` for Vite or `vp run dev:nuxt` for Nuxt from the workspace root. Open `/palette` at the local URL printed by the server. Both hosts serve palette data from their own `public/palettes/` directory. Each file contains a JSON array of nonblank color names. Selecting `aurora` loads `/palettes/aurora.json` and lists `indigo` followed by `harbor blue`. Selecting `mist` loads `/palettes/mist.json`, an empty array (`[]`), and displays “No colors in mist”.
+
+Nuxt also serves `/palette-ssr`. Its route composable fetches `/api/palette-ssr` with `useFetch` and owns selection and retry. The route awaits that query and registers the stylesheet. `PePaletteSsrPage` renders Aurora’s colors on the first response from the supplied state and emits selection and retry events. [SSR palette usage](packages/domain/palette-ssr/README.md)
 
 The Vite host installs Vue Router in `apps/vite/src/main.ts` and renders the matched route in `App.vue`. The route table in `src/router.ts` redirects `/` to `/palette` and lazy-loads `src/routes/public/PaletteRoute.vue`. This route imports the palette module and its compiled stylesheet. The sibling `src/routes/private/` directory reserves space for future pages.
 

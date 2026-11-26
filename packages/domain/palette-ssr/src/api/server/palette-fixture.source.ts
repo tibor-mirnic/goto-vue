@@ -1,4 +1,4 @@
-import type { PaletteName } from '../api/palettes/palettes.api.models.ts';
+import type { PaletteName } from '../palette.models.ts';
 
 const fixtureColors = {
   aurora: Object.freeze(['indigo', 'harbor blue']),
