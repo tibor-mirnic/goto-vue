@@ -7,5 +7,5 @@
     "emitDeclarationOnly": true,
     "noEmitOnError": true
   },
-  "include": ["src/index.ts"]
+  "include": ["src/index.ts", "src/index.moq.ts", "src/api/palettes/__tests__/paletteColors.moq.ts"]
 }

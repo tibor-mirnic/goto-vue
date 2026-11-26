@@ -7,11 +7,17 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: { index: 'entry.js' },
+      entry: {
+        index: 'entry.js',
+        'index.moq': 'src/index.moq.ts',
+        'api/palettes/__tests__/paletteColors.moq': 'src/api/palettes/__tests__/paletteColors.moq.ts'
+      },
       formats: ['es'],
       cssFileName: 'style'
     },
-    rolldownOptions: { external: ['vue', '@goto/infrastructure-http-client', '@goto/infrastructure-ui'] }
+    rolldownOptions: {
+      external: ['vue', '@goto/infrastructure-http-client', '@goto/infrastructure-ui', /^msw(?:\/|$)/]
+    }
   },
   run: {
     tasks: {

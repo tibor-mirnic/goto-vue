@@ -16,6 +16,14 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./moq": {
+      "types": "./dist/index.moq.d.ts",
+      "import": "./dist/index.moq.js"
+    },
+    "./moq/fixtures": {
+      "types": "./dist/api/palettes/__tests__/paletteColors.moq.d.ts",
+      "import": "./dist/api/palettes/__tests__/paletteColors.moq.js"
+    },
     "./style.css": "./dist/style.css"
   },
   "scripts": {
@@ -35,6 +43,7 @@
     "@storybook/vue3-vite": "catalog:",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
+    "msw": "catalog:",
     "sass": "catalog:",
     "storybook": "catalog:",
     "typescript": "catalog:",
@@ -42,6 +51,12 @@
     "vue": "catalog:"
   },
   "peerDependencies": {
+    "msw": "^3.0.8",
     "vue": "^3.5.46"
+  },
+  "peerDependenciesMeta": {
+    "msw": {
+      "optional": true
+    }
   }
 }

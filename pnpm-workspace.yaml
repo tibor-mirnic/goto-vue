@@ -17,6 +17,7 @@ catalog:
   '@typescript/typescript6': 6.0.2
   '@vitejs/plugin-vue': 6.0.11
   '@vitest/coverage-v8': 5.1.0
+  msw: 3.0.8
   nuxt: ^4.7.0
   sass: 1.108.2
   storybook: 10.6.9
@@ -42,3 +43,4 @@ minimumReleaseAgeExclude:
   - '@storybook/vue3-vite@10.6.9'
   - '@storybook/vue3@10.6.9'
   - storybook@10.6.9
+  - msw@3.0.8
