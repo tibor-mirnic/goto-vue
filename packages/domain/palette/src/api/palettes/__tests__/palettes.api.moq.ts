@@ -7,7 +7,7 @@ export const createPaletteHandlers = (origin: string) => {
     http.get(
       ({ request }) => {
         const { origin, pathname } = new URL(request.url);
-        return origin === appOrigin && pathname === `/palettes/${palette}.json`;
+        return origin === appOrigin && pathname === `/api/palettes/${palette}.json`;
       },
       () => HttpResponse.json(readMockPaletteColors(palette))
     );

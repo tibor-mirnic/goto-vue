@@ -18,6 +18,14 @@ export default defineConfig(async ({ command, isPreview }) => {
     define: { __ENABLE_MOCK_API__: JSON.stringify(enabled) },
     plugins,
     optimizeDeps,
+    server: {
+      proxy: {
+        '/api/': {
+          target: process.env.API_URL ?? 'http://127.0.0.1:4000',
+          changeOrigin: true
+        }
+      }
+    },
     run: {
       tasks: {
         // The checker reads imported types and templates outside task input tracking.

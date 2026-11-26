@@ -19,7 +19,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'PePalettePage calls providePaletteViewer() during setup and renders PePaletteViewer as its child. Each story uses the same provider. Choosing a palette requests /palettes/{name}.json. The host supplies an array of color names in display order. Switching palettes cancels the previous request.'
+          'PePalettePage calls providePaletteViewer() during setup and renders PePaletteViewer as its child. Each story uses the same provider. Choosing a palette requests /api/palettes/{name}.json. The host supplies an array of color names in display order. Switching palettes cancels the previous request.'
       },
       source: {
         language: 'vue',
@@ -91,7 +91,7 @@ export const RetryAfterFailure: Story = {
     const select = canvas.getByRole<HTMLSelectElement>('combobox', { name: 'Palette' });
     const fetchAsset = window.fetch;
     window.fetch = (input, init) =>
-      input === '/palettes/aurora.json'
+      input === '/api/palettes/aurora.json'
         ? Promise.resolve(new Response(null, { status: 503 }))
         : fetchAsset(input, init);
     try {

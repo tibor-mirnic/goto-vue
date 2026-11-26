@@ -58,7 +58,7 @@ test('renders loading, a retry action on failure, and colors after recovery', as
   expect(ready).toMatch(/<ul[^>]*aria-label="Colors"[^>]*>/);
   expect(ready.match(/<li[^>]*>teal<\/li>/g)).toHaveLength(2);
   expect(ready).not.toContain('<button');
-  expect(request.mock.calls.map(([path]) => path)).toEqual(['/palettes/aurora.json', '/palettes/aurora.json']);
+  expect(request.mock.calls.map(([path]) => path)).toEqual(['/api/palettes/aurora.json', '/api/palettes/aurora.json']);
 });
 
 test('keeps the latest palette visible when an earlier request finishes late', async () => {

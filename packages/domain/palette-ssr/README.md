@@ -31,7 +31,7 @@ The Nuxt route composable selects Aurora and calls `useFetch`. The route awaits 
 
 - `src/api/palette.models.ts` defines the palette names, result type and name guard shared by API code and the viewer.
 - `src/api/server/` implements the fixture read that Nitro calls through `@goto/domain-palette-ssr/server`. The Nuxt route composable calls the Nitro endpoint through `useFetch`.
-- `src/api/client/` is for reads that go directly from the browser to the data source. The sibling palette package’s [static asset read](../palette/src/api/palettes/palettes.api.ts) is an example.
+- `src/api/client/` is for reads that go directly from the browser to the data source. The sibling palette package’s [palette API read](../palette/src/api/palettes/palettes.api.ts) is an example.
 - `src/features/palette-ssr-viewer/` contains the viewer and its private `color-list/`, `picker/`, `retry/`, and `status/` directories. The picker owns `picker/usePaletteSsrPicker.ts`, and the status component owns `status/usePaletteSsrStatus.ts`. The page’s `__tests__/` directory covers rendering the supplied state and forwarding the viewer’s events.
 
 Use PascalCase for Vue component filenames. Name feature directories after the main component in kebab-case with the `Pe` module prefix removed, as in `PePaletteSsrViewer.vue` in `palette-ssr-viewer/`. Use camelCase TypeScript stems with `.provider.ts` and `.models.ts` suffixes for providers and models, as in `paletteViewer.provider.ts` and `paletteViewer.models.ts`.

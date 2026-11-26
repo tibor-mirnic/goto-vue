@@ -3,7 +3,7 @@ import { type Request, expect, test } from '@playwright/test';
 test('loads palette colors only after a selection', async ({ page }) => {
   const paletteGets: Request[] = [];
   page.on('request', (request) => {
-    if (request.method() === 'GET' && new URL(request.url()).pathname.startsWith('/palettes/')) {
+    if (request.method() === 'GET' && new URL(request.url()).pathname.startsWith('/api/palettes/')) {
       paletteGets.push(request);
     }
   });
@@ -28,8 +28,8 @@ test('loads palette colors only after a selection', async ({ page }) => {
   await expect(colorList).toHaveCount(0);
   expect(paletteGets).toHaveLength(0);
 
-  const auroraUrl = new URL('/palettes/aurora.json', page.url()).href;
-  const mistUrl = new URL('/palettes/mist.json', page.url()).href;
+  const auroraUrl = new URL('/api/palettes/aurora.json', page.url()).href;
+  const mistUrl = new URL('/api/palettes/mist.json', page.url()).href;
 
   await picker.selectOption('aurora');
   await expect(colorList.getByRole('listitem')).toHaveText(['indigo', 'harbor blue']);

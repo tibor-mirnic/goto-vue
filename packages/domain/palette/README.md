@@ -15,13 +15,13 @@ import '@goto/domain-palette/style.css';
 </template>
 ```
 
-Serve `/palettes/aurora.json` and `/palettes/mist.json` from the host with an array of nonempty color names, for example `["indigo", "harbor blue"]`. The viewer preserves the response order and duplicate colors. Selecting another palette cancels the earlier request.
+Serve `/api/palettes/aurora.json` and `/api/palettes/mist.json` from the host with an array of nonempty color names, for example `["indigo", "harbor blue"]`. The viewer preserves the response order and duplicate colors. Selecting another palette cancels the earlier request.
 
 ## Storybook
 
 Run `vp run domain-palette:storybook` from the workspace root and open port 6007. In **Palette → Features → PePaletteViewer**, choose **aurora** to see a list of colors or **mist** for an empty result. **Retry After Failure** starts at a failed request. Click **Retry** to load Aurora’s colors. The Docs page shows how the page provides state to the viewer. Each story mounts its own provider.
 
-The explorer serves `.storybook/public/palettes/` at `/palettes/`. Stories use the same loader and decoder as the page. The retry example supplies one failed response before retrying against the local asset. Canvas and Docs load the module’s default `src/style.scss` and share the UI explorer’s System, Light and Dark theme choices.
+The explorer serves `.storybook/public/api/palettes/` at `/api/palettes/`. Stories use the same loader and decoder as the page. The retry example supplies one failed response before retrying against the local asset. Canvas and Docs load the module’s default `src/style.scss` and share the UI explorer’s System, Light and Dark theme choices.
 
 Run `vp run domain-palette:storybook:build` to generate `packages/domain/palette/storybook-static/`. Serve that directory at the web origin’s root so the absolute palette URLs resolve. Both commands build the module’s workspace dependencies first.
 

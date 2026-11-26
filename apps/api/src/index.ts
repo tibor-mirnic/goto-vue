@@ -1,7 +1,7 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 
-const app = new Hono();
+const app = new Hono().basePath('/api');
 
 app.get('/palettes/aurora.json', (context) => context.json(['indigo', 'harbor blue']));
 app.get('/palettes/mist.json', (context) => context.json([]));
