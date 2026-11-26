@@ -1,0 +1,5 @@
+@use './palette-ssr/pe-palette-ssr-page' as page;
+
+@mixin load-pe-ssr-pages($theme, $variables, $color-palette) {
+  @include page.pe-palette-ssr-page($theme, $variables, $color-palette);
+}

@@ -1,0 +1,5 @@
+@use '@goto/infrastructure-ui/styles.scss' as ui;
+@use './index' as palette;
+
+@include ui.load-goto-ui-styles;
+@include palette.load-pe-ssr-module;

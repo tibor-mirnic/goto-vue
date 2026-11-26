@@ -15,7 +15,8 @@
     "./server": {
       "types": "./dist/index.server.d.ts",
       "import": "./dist/index.server.js"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "scripts": {
     "build": "vp build && vp run declarations",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
+    "sass": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:",
     "vue": "catalog:"

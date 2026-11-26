@@ -1,0 +1,23 @@
+@use 'sass:map';
+
+@mixin pe-palette-ssr-viewer($theme, $variables, $color-palette) {
+  $border: map.get($color-palette, map.get($theme, border));
+  $canvas: map.get($color-palette, map.get($theme, canvas));
+  $on-surface: map.get($color-palette, map.get($theme, on-surface));
+
+  .pe-palette-ssr-viewer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 1px solid var(--goto-ui-border-color, #{$border});
+    border-radius: map.get($variables, control, border-radius);
+    background-color: var(--goto-ui-canvas-color, #{$canvas});
+    color: var(--goto-ui-on-surface-color, #{$on-surface});
+    overflow-wrap: anywhere;
+
+    &__retry {
+      justify-self: start;
+    }
+  }
+}

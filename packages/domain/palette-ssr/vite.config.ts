@@ -7,8 +7,9 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: { index: 'src/index.ts', 'index.server': 'src/index.server.ts' },
-      formats: ['es']
+      entry: { index: 'entry.js', 'index.server': 'src/index.server.ts' },
+      formats: ['es'],
+      cssFileName: 'style'
     },
     rolldownOptions: { external: ['vue', '@goto/infrastructure-ui'] }
   },
