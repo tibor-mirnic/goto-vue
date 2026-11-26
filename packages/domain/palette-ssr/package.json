@@ -11,6 +11,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/index.server.d.ts",
+      "import": "./dist/index.server.js"
     }
   },
   "scripts": {
@@ -18,6 +22,7 @@
     "dev": "pnpm run \"/^watch:/\"",
     "watch:runtime": "vp build --watch --no-emptyOutDir",
     "watch:types": "vp run declarations --watch",
+    "test": "vp test",
     "check": "vp check && vp run vue:typecheck"
   },
   "devDependencies": {

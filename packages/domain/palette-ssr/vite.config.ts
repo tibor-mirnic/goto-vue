@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: { index: 'src/index.ts' },
+      entry: { index: 'src/index.ts', 'index.server': 'src/index.server.ts' },
       formats: ['es']
     },
     rolldownOptions: { external: ['vue'] }
