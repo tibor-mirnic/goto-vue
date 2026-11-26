@@ -4,14 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vp run @goto/domain-palette#build && nuxt build",
-    "dev": "vp run @goto/domain-palette#build && nuxt dev",
+    "build": "vp run build:dependencies && nuxt build",
+    "build:dependencies": "vp run --filter \"@goto/nuxt-app^...\" --concurrency-limit 1 build",
+    "dev": "vp run build:dependencies && nuxt dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "vue:typecheck": "vp run @goto/domain-palette#build && nuxt prepare && node ../../tooling/vue-tsc.cjs -b --noEmit"
+    "vue:typecheck": "vp run build:dependencies && nuxt prepare && node ../../tooling/vue-tsc.cjs -b --noEmit"
   },
   "dependencies": {
     "@goto/domain-palette": "workspace:*",
+    "@goto/domain-palette-ssr": "workspace:*",
     "nuxt": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
