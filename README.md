@@ -26,6 +26,8 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | `vp run domain-palette-ssr:storybook:build` | Builds the static SSR palette Storybook in `packages/domain/palette-ssr/storybook-static/`.                                                                         |
 | `vp run dev`                                | Starts the Vue Router host. Open `/palette` directly or follow the redirect from `/`.                                                                               |
 | `vp run dev:nuxt`                           | Starts the Nuxt dev server. Open `/palette` or `/palette-ssr`.                                                                                                      |
+| `vp run nuxt:e2e`                           | Runs Playwright against the Nuxt host.                                                                                                                              |
+| `vp run vite:e2e`                           | Runs Playwright against the Vue Router host.                                                                                                                        |
 | `vp check`                                  | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client, UI and SSR palette libraries have been built.                            |
 | `vp run check`                              | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
 | `vp test run`                               | Runs all unit tests once from the root after the HTTP client, UI and SSR palette libraries have been built.                                                         |
@@ -65,6 +67,30 @@ curl -sSi 'http://127.0.0.1:3000/api/palette-ssr?name=aurora&name=aurora'
 The Vite host installs Vue Router in `apps/vite/src/main.ts` and renders the matched route in `App.vue`. The route table in `src/router.ts` redirects `/` to `/palette` and lazy-loads `src/routes/public/PaletteRoute.vue`. This route imports the palette module and its compiled stylesheet. The sibling `src/routes/private/` directory reserves space for future pages.
 
 To deploy the Vite host, run `vp run @goto/vite-app#build` and serve `apps/vite/dist/` at the site root. Serve static files first, including `/assets/` and `/palettes/*.json`. Configure the host to fall back to `index.html` for client routes so direct visits and reloads at `/palette` reach Vue Router.
+
+## Host end-to-end tests
+
+After installing workspace dependencies, run the following once from the repository root to install the Chromium headless shell used by both Playwright workspaces.
+
+```sh
+pnpm --filter @goto/nuxt-e2e exec playwright install chromium --only-shell
+```
+
+Run `vp run nuxt:e2e` for the Nuxt host or `vp run vite:e2e` for the Vite/Vue Router host. Each suite builds its host, and Playwright starts the built server on a dedicated loopback port. Nuxt uses its Nitro server and Vite uses its preview server.
+
+The specs under `apps/nuxt-e2e/tests/` and `apps/vite-e2e/tests/` exercise each host’s `/palette` route from the initial idle state through the Aurora and Mist selections, using the host’s static JSON fixtures. Unit and component tests run separately through Vitest.
+
+To scaffold another host suite, create a private test workspace in an unused `apps/` directory. From the repository root, run the official Playwright generator through Vite+, passing the workspace’s directory name after `--`. The Vite suite used this form. [Vite+ generators](https://viteplus.dev/guide/create)
+
+```sh
+pnpm exec vp create create-playwright --no-interactive --no-agent --no-editor --no-hooks -- example-e2e --quiet --no-browsers --no-examples --browser chromium
+```
+
+The Nuxt suite ran the same generator directly from its test workspace directory. [Playwright installation](https://playwright.dev/docs/intro)
+
+```sh
+pnpm create playwright --quiet --no-browsers --no-examples --browser chromium
+```
 
 ## Adding an app
 

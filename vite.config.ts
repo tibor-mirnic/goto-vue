@@ -1,5 +1,5 @@
 import vue from '@vitejs/plugin-vue';
-import { defineConfig } from 'vite-plus';
+import { defaultExclude, defineConfig } from 'vite-plus';
 
 export default defineConfig({
   plugins: [vue()],
@@ -54,6 +54,7 @@ export default defineConfig({
     }
   },
   test: {
+    exclude: [...defaultExclude, 'apps/{nuxt,vite}-e2e/**'],
     coverage: {
       include: [
         '{apps/*,packages/*,packages/domain/*,packages/infrastructure/*}/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts,vue}',

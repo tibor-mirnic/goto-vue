@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"],
+    "strict": true
+  },
+  "include": ["playwright.config.ts", "tests/**/*.ts"]
+}

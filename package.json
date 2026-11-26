@@ -8,6 +8,8 @@
     "ready": "vp run -r build && vp run check && vp run -r test",
     "dev": "vp run @goto/vite-app#dev",
     "dev:nuxt": "vp run @goto/nuxt-app#dev",
+    "nuxt:e2e": "vp run --no-cache @goto/nuxt-e2e#test:e2e",
+    "vite:e2e": "vp run --no-cache @goto/vite-e2e#test:e2e",
     "check": "vp run -r vue:typecheck && vp check",
     "infrastructure-ui:storybook": "vp run @goto/infrastructure-ui#storybook",
     "infrastructure-ui:storybook:build": "vp run @goto/infrastructure-ui#build-storybook",
