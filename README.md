@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a Nuxt host in `apps/nuxt`, a Vue Router host in `apps/vite` and four private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
+A Vite+ workspace with a Nuxt host in `apps/nuxt`, a Vue Router host in `apps/vite` and four private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and Storybook. The [SSR palette package](packages/domain/palette-ssr/README.md) provides `PaletteSsrModule` for host-supplied state and a separate palette read for server code.
 
 ## First checkout
 
@@ -16,21 +16,23 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 
 ## Root commands
 
-| Command                                    | What it does                                                                                                                                                        |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vp run infrastructure-ui:storybook`       | Starts the UI Storybook on port 6006 with live Vue components, controls and documentation.                                                                          |
-| `vp run infrastructure-ui:storybook:build` | Builds the static UI Storybook in `packages/infrastructure/ui/storybook-static/`.                                                                                   |
-| `vp run domain-palette:storybook`          | Starts the palette Storybook on port 6007 with the interactive palette viewer and local palette data.                                                               |
-| `vp run domain-palette:storybook:build`    | Builds the static palette Storybook in `packages/domain/palette/storybook-static/`.                                                                                 |
-| `vp run dev`                               | Starts the Vue Router host. Open `/palette` directly or follow the redirect from `/`.                                                                               |
-| `vp run dev:nuxt`                          | Starts the Nuxt dev server. Open `/palette` directly or follow the redirect from `/`.                                                                               |
-| `vp check`                                 | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client, UI and SSR palette libraries have been built.                            |
-| `vp run check`                             | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
-| `vp test run`                              | Runs all unit tests once from the root after the HTTP client, UI and SSR palette libraries have been built.                                                         |
-| `vp run -r test`                           | Builds the palette’s HTTP client and UI dependencies and runs each package’s tests. The pre-push hook uses this command.                                            |
-| `vp run -r build`                          | Builds the apps and libraries. The palette build checks Vue types and emits its module, declarations and stylesheet into `dist/`.                                   |
-| `vp run ready`                             | Builds first, then runs `vp run check` and the package tests. Use this for a clean checkout or a full local check.                                                  |
-| `vp run coverage`                          | Runs unit tests with V8 coverage across app and library source, including untested files. Prints a summary and writes the combined report to `coverage/index.html`. |
+| Command                                     | What it does                                                                                                                                                        |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vp run infrastructure-ui:storybook`        | Starts the UI Storybook on port 6006 with live Vue components, controls and documentation.                                                                          |
+| `vp run infrastructure-ui:storybook:build`  | Builds the static UI Storybook in `packages/infrastructure/ui/storybook-static/`.                                                                                   |
+| `vp run domain-palette:storybook`           | Starts the palette Storybook on port 6007 with the interactive palette viewer and local palette data.                                                               |
+| `vp run domain-palette:storybook:build`     | Builds the static palette Storybook in `packages/domain/palette/storybook-static/`.                                                                                 |
+| `vp run domain-palette-ssr:storybook`       | Starts the SSR palette Storybook on port 6008 with ready, empty, pending and retry examples.                                                                        |
+| `vp run domain-palette-ssr:storybook:build` | Builds the static SSR palette Storybook in `packages/domain/palette-ssr/storybook-static/`.                                                                         |
+| `vp run dev`                                | Starts the Vue Router host. Open `/palette` directly or follow the redirect from `/`.                                                                               |
+| `vp run dev:nuxt`                           | Starts the Nuxt dev server. Open `/palette` directly or follow the redirect from `/`.                                                                               |
+| `vp check`                                  | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client, UI and SSR palette libraries have been built.                            |
+| `vp run check`                              | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
+| `vp test run`                               | Runs all unit tests once from the root after the HTTP client, UI and SSR palette libraries have been built.                                                         |
+| `vp run -r test`                            | Builds the palette’s HTTP client and UI dependencies and runs each package’s tests. The pre-push hook uses this command.                                            |
+| `vp run -r build`                           | Builds the apps and libraries. The palette build checks Vue types and emits its module, declarations and stylesheet into `dist/`.                                   |
+| `vp run ready`                              | Builds first, then runs `vp run check` and the package tests. Use this for a clean checkout or a full local check.                                                  |
+| `vp run coverage`                           | Runs unit tests with V8 coverage across app and library source, including untested files. Prints a summary and writes the combined report to `coverage/index.html`. |
 
 Use arrow functions for implementations, including callbacks, object methods and class methods. Class constructors and property getters and setters use method syntax. The rule applies only to implementations. [Arrow-function lint rule and examples](tooling/README.md)
 
@@ -95,5 +97,5 @@ Installation runs the root `prepare` script to register the hooks in `.vite-hook
 ## Tooling decisions
 
 - The Vite host runs its TypeScript check uncached because cached native compiler results could miss incompatible changes. Consumers import each library through its package entry point. Relative imports across packages still need an ownership rule.
-- The UI controls and the palette viewer have colocated Storybook stories. Each preview loads its library’s default Sass entry. Both explorers share Canvas and Docs theme settings from `tooling/storybook/`. Vue template checks and component tests run through the workspace checks.
+- The UI controls and both palette viewers have colocated Storybook stories. Each preview loads its library’s default Sass entry. All three explorers share Canvas and Docs theme settings from `tooling/storybook/`. Vue template checks and component tests run through the workspace checks.
 - Validate the packed library from a consumer before introducing a local registry such as Verdaccio. Release automation depends on a versioned artifact, owner and delivery target. The root test command supports CI once a provider is chosen.
