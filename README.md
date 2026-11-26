@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a Nuxt host in `apps/nuxt`, a Vue Router host in `apps/vite` and three private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
+A Vite+ workspace with a Nuxt host in `apps/nuxt`, a Vue Router host in `apps/vite` and four private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
 
 ## First checkout
 

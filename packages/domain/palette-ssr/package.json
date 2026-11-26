@@ -1,0 +1,33 @@
+{
+  "name": "@goto/domain-palette-ssr",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The Vue module for the server-rendered palette example.",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "vp build && vp run declarations",
+    "dev": "pnpm run \"/^watch:/\"",
+    "watch:runtime": "vp build --watch --no-emptyOutDir",
+    "watch:types": "vp run declarations --watch",
+    "check": "vp check && vp run vue:typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vue": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.46"
+  }
+}
