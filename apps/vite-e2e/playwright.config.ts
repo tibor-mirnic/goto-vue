@@ -21,7 +21,7 @@ export default defineConfig({
       command: 'pnpm run build && pnpm run start',
       cwd: fileURLToPath(new URL('../api', import.meta.url)),
       env: { HOST: host, PORT: String(apiPort) },
-      url: `${apiOrigin}/api/palettes/aurora.json`,
+      url: `${apiOrigin}/api/palettes/aurora`,
       reuseExistingServer: false,
       timeout: 180_000
     },

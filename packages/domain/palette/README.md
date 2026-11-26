@@ -15,7 +15,7 @@ import '@goto/domain-palette/style.css';
 </template>
 ```
 
-Serve `/api/palettes/aurora.json` and `/api/palettes/mist.json` from the host with an array of nonempty color names, for example `["indigo", "harbor blue"]`. The viewer preserves the response order and duplicate colors. Selecting another palette cancels the earlier request.
+Serve `/api/palettes/aurora` and `/api/palettes/mist` from the host with an array of nonempty color names, for example `["indigo", "harbor blue"]`. The viewer preserves the response order and duplicate colors. Selecting another palette cancels the earlier request.
 
 ## Storybook
 

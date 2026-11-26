@@ -5,8 +5,8 @@ import { createPaletteHandlers } from '../../../index.moq.ts';
 import { readMockPaletteColors } from './paletteColors.moq.ts';
 
 const origin = 'https://palette.example.test';
-const aurora = `${origin}/api/palettes/aurora.json`;
-const mist = `${origin}/api/palettes/mist.json`;
+const aurora = `${origin}/api/palettes/aurora`;
+const mist = `${origin}/api/palettes/mist`;
 const handlers = createPaletteHandlers(origin);
 const server = setupServer(
   ...handlers,
@@ -47,10 +47,11 @@ test('restores the default response after the override', async () => {
 });
 
 test.each([
-  [`${origin}/api/palettes/unknown.json`, 'GET'],
+  [`${origin}/api/palettes/unknown`, 'GET'],
+  [`${aurora}.json`, 'GET'],
   [`${origin}/api/palette-ssr?name=aurora`, 'GET'],
   [`${aurora}/`, 'GET'],
-  ['https://other.example.test/api/palettes/aurora.json', 'GET'],
+  ['https://other.example.test/api/palettes/aurora', 'GET'],
   [aurora, 'POST']
 ])('leaves %s (%s) available to other handlers', async (url, method) => {
   expect(await (await fetch(url, { method })).text()).toBe('unrelated traffic');

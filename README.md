@@ -26,7 +26,7 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | `vp run domain-palette-ssr:storybook:build` | Builds the static SSR palette Storybook in `packages/domain/palette-ssr/storybook-static/`.                                                                         |
 | `pnpm dev`                                  | Starts the Vue Router host. Run the Hono API alongside it for real palette reads.                                                                                   |
 | `pnpm dev:api`                              | Starts the Hono palette API at `127.0.0.1:4000`. Use `HOST` and `PORT` to override it.                                                                              |
-| `vp run dev:nuxt`                           | Starts the Nuxt dev server. Open `/palette` or `/palette-ssr`.                                                                                                      |
+| `vp run dev:nuxt`                           | Starts the Nuxt dev server. Run the Hono API alongside it for real chooser reads.                                                                                   |
 | `vp run nuxt:e2e`                           | Runs Playwright against the Nuxt host.                                                                                                                              |
 | `vp run vite:e2e`                           | Runs Playwright against the Vue Router host.                                                                                                                        |
 | `vp check`                                  | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client, UI and SSR palette libraries have been built.                            |
@@ -45,13 +45,15 @@ Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages
 
 For Vite, start `pnpm dev:api` and `pnpm dev` in separate terminals from the workspace root. The Vite development and preview servers forward `/api/` paths unchanged to Hono at `http://127.0.0.1:4000`. Set `API_URL` to a different upstream origin when starting Vite or preview. `ENABLE_MOCK_API=true pnpm dev` uses the browser mocks and can run with Hono stopped. [Vite preview proxy options](https://vite.dev/config/preview-options.html#preview-proxy)
 
-Run `vp run dev:nuxt` for Nuxt, which serves the chooser’s palette data from `apps/nuxt/public/api/palettes/`. Both hosts start `/palette` with “Choose a palette” selected. In normal mode, selecting `aurora` loads `/api/palettes/aurora.json` and lists `indigo` followed by `harbor blue`. Selecting `mist` loads `/api/palettes/mist.json`, an empty array (`[]`), and displays “No colors in mist”.
+For Nuxt, start `pnpm dev:api` and `pnpm dev:nuxt` in separate terminals. The chooser’s `GET /api/palettes/:name` forwards to Hono at `http://127.0.0.1:4000`. Nuxt handles `/api/palette-ssr` locally. Set `API_URL` to a different upstream origin when starting Nuxt development or the built Nitro server. `ENABLE_MOCK_API=true pnpm dev:nuxt` serves chooser mock responses from the Nuxt development server and can run with Hono stopped. [Nuxt server routes](https://nuxt.com/docs/4.x/directory-structure/server#route-parameters)
+
+Both hosts start `/palette` with “Choose a palette” selected. In normal mode, selecting `aurora` loads `/api/palettes/aurora` and lists `indigo` followed by `harbor blue`. Selecting `mist` loads `/api/palettes/mist`, an empty array (`[]`), and displays “No colors in mist”. If Hono is unavailable, the chooser shows an error. Start Hono and select Retry to reload the palette.
 
 Open `/palette-ssr` on the Nuxt server to see Aurora selected by default. The first HTML response contains the list items `indigo` and `harbor blue` in that order. The route awaits its composable’s `useFetch` query before passing the initial state to `PePaletteSsrPage`. The composable owns selection and retry, and each Nuxt palette route registers its own compiled stylesheet. [SSR palette usage](packages/domain/palette-ssr/README.md)
 
 `GET /api/palette-ssr` requires exactly one `name` query parameter with the lowercase value `aurora` or `mist`. It returns HTTP `200` with a JSON `{ palette, colors }` object. Aurora’s `colors` is `["indigo", "harbor blue"]` and Mist’s is `[]`. A missing, empty, repeated or unsupported `name` returns HTTP `400`, including when repeated values are identical.
 
-Build and start the production Nuxt server from the workspace root.
+Start Hono with `pnpm dev:api` in one terminal. In another terminal, build and start the production Nuxt server from the workspace root.
 
 ```sh
 vp run --no-cache @goto/nuxt-app#build
@@ -79,9 +81,9 @@ After installing workspace dependencies, run the following once from the reposit
 pnpm --filter @goto/nuxt-e2e exec playwright install chromium --only-shell
 ```
 
-Run `vp run nuxt:e2e` for the Nuxt host or `vp run vite:e2e` for the Vite/Vue Router host. Each suite builds its host, and Playwright starts the built server on a dedicated loopback port. Nuxt uses its Nitro server, and the Vite suite starts both Hono and Vite preview.
+Run `vp run nuxt:e2e` for the Nuxt host or `vp run vite:e2e` for the Vite/Vue Router host. Each suite builds and starts its own Hono server and its host on separate loopback ports. Nuxt uses its built Nitro server, and Vite runs in preview.
 
-The specs under `apps/nuxt-e2e/tests/` and `apps/vite-e2e/tests/` exercise each host’s `/palette` route from the initial idle state through the Aurora and Mist selections. Nuxt uses its static JSON fixtures, and Vite proxies those reads to Hono. Unit and component tests run separately through Vitest.
+The specs under `apps/nuxt-e2e/tests/` and `apps/vite-e2e/tests/` exercise each host’s `/palette` route from the initial idle state through the Aurora and Mist selections. Both hosts proxy those reads to Hono. Unit and component tests run separately through Vitest.
 
 To scaffold another host suite, create a private test workspace in an unused `apps/` directory. From the repository root, run the official Playwright generator through Vite+, passing the workspace’s directory name after `--`. The Vite suite used this form. [Vite+ generators](https://viteplus.dev/guide/create)
 

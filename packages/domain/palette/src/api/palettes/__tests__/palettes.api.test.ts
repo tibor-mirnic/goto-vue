@@ -8,7 +8,7 @@ test('requests the encoded palette asset with the caller signal and decodes its 
   vi.stubGlobal('fetch', request);
   const { signal } = new AbortController();
   await expect(getPaletteColors('Aurora / Mist', signal)).resolves.toEqual(['indigo']);
-  expect(request).toHaveBeenCalledExactlyOnceWith('/api/palettes/Aurora%20%2F%20Mist.json', { method: 'GET', signal });
+  expect(request).toHaveBeenCalledExactlyOnceWith('/api/palettes/Aurora%20%2F%20Mist', { method: 'GET', signal });
 });
 
 test('rejects a malformed palette returned by the HTTP client', async () => {

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "vp run build:dependencies && nuxt build",
     "build:dependencies": "vp run --filter \"@goto/nuxt-app^...\" --concurrency-limit 1 build",
-    "dev": "vp run build:dependencies && nuxt dev",
+    "dev": "vp run build:dependencies && vp run --no-cache dev:server",
+    "dev:server": "nuxt dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "vue:typecheck": "vp run build:dependencies && nuxt prepare && node ../../tooling/vue-tsc.cjs -b --noEmit"
@@ -17,5 +18,8 @@
     "nuxt": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "msw": "catalog:"
   }
 }

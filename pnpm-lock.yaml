@@ -321,6 +321,10 @@ importers:
       vue-router:
         specifier: 'catalog:'
         version: 5.5.1(@voidzero-dev/vite-plus-core@8.3.8000(@types/node@26.6.6)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(terser@5.51.4)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2)))(@vue/compiler-sfc@3.5.46)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.8)(vue@3.5.46(typescript@7.0.2))
+    devDependencies:
+      msw:
+        specifier: 'catalog:'
+        version: 3.0.8(@types/node@26.6.6)(@voidzero-dev/vite-plus-core@8.3.8000(@types/node@26.6.6)(@vue/language-core@3.3.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(terser@5.51.4)(typescript@7.0.2)(vue-tsc@3.3.14(typescript@7.0.2)))(supports-color@10.2.2)(typescript@7.0.2)
 
   apps/nuxt-e2e:
     devDependencies:

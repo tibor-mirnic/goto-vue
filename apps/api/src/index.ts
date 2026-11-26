@@ -3,8 +3,12 @@ import { Hono } from 'hono';
 
 const app = new Hono().basePath('/api');
 
-app.get('/palettes/aurora.json', (context) => context.json(['indigo', 'harbor blue']));
-app.get('/palettes/mist.json', (context) => context.json([]));
+app.get('/palettes/:name', (context) => {
+  const name = context.req.param('name');
+  if (name === 'aurora') return context.json(['indigo', 'harbor blue']);
+  if (name === 'mist') return context.json([]);
+  return context.notFound();
+});
 app.notFound((context) => context.json({ error: 'Not found' }, 404));
 
 const hostname = process.env.HOST ?? '127.0.0.1';

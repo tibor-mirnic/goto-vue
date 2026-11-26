@@ -21,8 +21,8 @@ test('loads palette colors only after a selection', async ({ page }) => {
   await expect(colorList).toHaveCount(0);
   expect(paletteGets).toHaveLength(0);
 
-  const auroraUrl = new URL('/api/palettes/aurora.json', page.url()).href;
-  const mistUrl = new URL('/api/palettes/mist.json', page.url()).href;
+  const auroraUrl = new URL('/api/palettes/aurora', page.url()).href;
+  const mistUrl = new URL('/api/palettes/mist', page.url()).href;
 
   await picker.selectOption('aurora');
   await expect(colorList.getByRole('listitem')).toHaveText(['indigo', 'harbor blue']);
