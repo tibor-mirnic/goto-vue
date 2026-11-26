@@ -1,4 +1,9 @@
-import './style.css';
-import { renderHomeRoute } from './routes/public/HomeRoute.ts';
+import { createApp } from 'vue';
+import App from './App.vue';
+import { router } from './router';
 
-renderHomeRoute(document.querySelector<HTMLDivElement>('#app')!);
+const app = createApp(App);
+
+app.use(router);
+
+app.mount('#app');

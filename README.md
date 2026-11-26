@@ -1,6 +1,6 @@
 # goto-vue
 
-A Vite+ workspace with a Nuxt host in `apps/nuxt`, a vanilla TypeScript host in `apps/vite` and three private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
+A Vite+ workspace with a Nuxt host in `apps/nuxt`, a Vue Router host in `apps/vite` and three private libraries. The [UI package](packages/infrastructure/ui/README.md) provides shared Vue controls, Sass and a Storybook. Import `PaletteModule` from `@goto/domain-palette` and the HTTP client from `@goto/infrastructure-http-client`. See the [palette package](packages/domain/palette/README.md) for its stylesheet, usage and interactive Storybook examples.
 
 ## First checkout
 
@@ -40,11 +40,15 @@ Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages
 
 Run `vp run dev:nuxt` from the workspace root and open `/palette`. Selecting a palette loads `/palettes/<name>.json` from the Nuxt host’s `apps/nuxt/public/palettes/` directory. Each file contains a JSON array of nonblank color names. Selecting `aurora` lists `indigo` and `harbor blue`. Selecting `mist` loads an empty array (`[]`) and displays “No colors in mist”.
 
-The vanilla Vite host mounts `apps/vite/src/routes/public/HomeRoute.ts` directly from `src/main.ts` at startup. Its sibling `src/routes/private/` reserves space for future pages. When the host adopts Vue Router, explicit route records will map URLs to these files. Both hosts currently use the folders for organization only.
+The Vite host installs Vue Router in `apps/vite/src/main.ts` and renders the matched route in `App.vue`. The route table in `src/router.ts` redirects `/` to `/palette` and lazy-loads `src/routes/public/PaletteRoute.vue`. The sibling `src/routes/private/` directory reserves space for future pages.
 
 ## Adding an app
 
-From the repository root, use `pnpm exec vp create` with the framework generator and choose an unused name under `apps/`. For a new Vue app with Vite, `pnpm exec vp create vue` opens the official Vue starter. The existing vanilla TypeScript host in `apps/vite` came from renaming `apps/website`. [Vite+ generators](https://viteplus.dev/guide/create)
+From the repository root, use `pnpm exec vp create` with the framework generator and choose an unused name under `apps/`. The Vite host used the official Vue starter with TypeScript and Vue Router. Running this command in a workspace where `apps/vite` is available creates the bare starter there. [Vite+ generators](https://viteplus.dev/guide/create)
+
+```sh
+pnpm exec vp create vue --no-interactive --no-agent --no-editor --no-hooks --package-manager pnpm -- vite --ts --router --bare
+```
 
 The Nuxt host used the following command in a workspace where `apps/nuxt` was available. Vite+ selects `apps` as the parent directory. The first argument after `--` gives the Nuxt initializer the directory name `nuxt`, producing `apps/nuxt`.
 
