@@ -1,4 +1,4 @@
-const paletteNames = ['aurora', 'mist'] as const;
+export const paletteNames = ['aurora', 'mist'] as const;
 
 export type PaletteName = (typeof paletteNames)[number];
 

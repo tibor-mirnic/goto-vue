@@ -22,8 +22,11 @@
     "dev": "pnpm run \"/^watch:/\"",
     "watch:runtime": "vp build --watch --no-emptyOutDir",
     "watch:types": "vp run declarations --watch",
-    "test": "vp test",
+    "test": "vp run unit",
     "check": "vp check && vp run vue:typecheck"
+  },
+  "dependencies": {
+    "@goto/infrastructure-ui": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

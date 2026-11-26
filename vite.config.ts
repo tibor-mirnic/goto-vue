@@ -43,7 +43,11 @@ export default defineConfig({
     cache: true,
     tasks: {
       coverage: {
-        dependsOn: ['@goto/infrastructure-http-client#build', '@goto/infrastructure-ui#build'],
+        dependsOn: [
+          '@goto/infrastructure-http-client#build',
+          '@goto/infrastructure-ui#build',
+          '@goto/domain-palette-ssr#build'
+        ],
         command: "vp test run --coverage --exclude '!(apps|packages)/**' --exclude '**/{dist,dist-ssr,coverage}/**'",
         cache: false
       }

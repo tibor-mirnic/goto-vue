@@ -351,6 +351,10 @@ importers:
         version: 3.5.46(typescript@7.0.2)
 
   packages/domain/palette-ssr:
+    dependencies:
+      '@goto/infrastructure-ui':
+        specifier: workspace:*
+        version: link:../../infrastructure/ui
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
