@@ -25,7 +25,7 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | `vp run domain-palette-ssr:storybook`       | Starts the SSR palette Storybook on port 6008 with ready, empty, pending and retry examples.                                                                        |
 | `vp run domain-palette-ssr:storybook:build` | Builds the static SSR palette Storybook in `packages/domain/palette-ssr/storybook-static/`.                                                                         |
 | `vp run dev`                                | Starts the Vue Router host. Open `/palette` directly or follow the redirect from `/`.                                                                               |
-| `vp run dev:nuxt`                           | Starts the Nuxt dev server. Open `/palette` directly or follow the redirect from `/`.                                                                               |
+| `vp run dev:nuxt`                           | Starts the Nuxt dev server. Open `/palette` or `/palette-ssr`.                                                                                                      |
 | `vp check`                                  | Checks workspace formatting, lint rules and native TypeScript types after the HTTP client, UI and SSR palette libraries have been built.                            |
 | `vp run check`                              | Runs each enrolled `vue:typecheck` task, then checks workspace formatting, lint and native TypeScript types.                                                        |
 | `vp test run`                               | Runs all unit tests once from the root after the HTTP client, UI and SSR palette libraries have been built.                                                         |
@@ -38,11 +38,29 @@ Use arrow functions for implementations, including callbacks, object methods and
 
 ## Host routes
 
-Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages/(private)/`. Nuxt omits parenthesized folder names from URLs, so `(public)/palette.vue` serves `/palette`. The root URL redirects there. [Nuxt route groups](https://nuxt.com/docs/4.x/directory-structure/app/pages#route-groups)
+Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages/(private)/`. Nuxt omits parenthesized folder names from URLs, so `(public)/palette.vue` serves `/palette`. A request to `/` redirects to `/palette` with HTTP `307`. [Nuxt route groups](https://nuxt.com/docs/4.x/directory-structure/app/pages#route-groups)
 
-Run `vp run dev` for Vite or `vp run dev:nuxt` for Nuxt from the workspace root. Open `/palette` at the local URL printed by the server. Both hosts serve palette data from their own `public/palettes/` directory. Each file contains a JSON array of nonblank color names. Selecting `aurora` loads `/palettes/aurora.json` and lists `indigo` followed by `harbor blue`. Selecting `mist` loads `/palettes/mist.json`, an empty array (`[]`), and displays “No colors in mist”.
+Run `vp run dev` for Vite or `vp run dev:nuxt` for Nuxt from the workspace root. Open `/palette` at the local URL printed by the server. The page starts idle with “Choose a palette” selected. Both hosts serve palette data from their own `public/palettes/` directory. Each file contains a JSON array of nonblank color names. Selecting `aurora` loads `/palettes/aurora.json` and lists `indigo` followed by `harbor blue`. Selecting `mist` loads `/palettes/mist.json`, an empty array (`[]`), and displays “No colors in mist”.
 
-Nuxt also serves `/palette-ssr`. Its route composable fetches `/api/palette-ssr` with `useFetch` and owns selection and retry. The route awaits that query and registers the stylesheet. `PePaletteSsrPage` renders Aurora’s colors on the first response from the supplied state and emits selection and retry events. [SSR palette usage](packages/domain/palette-ssr/README.md)
+Open `/palette-ssr` on the Nuxt server to see Aurora selected by default. The first HTML response contains the list items `indigo` and `harbor blue` in that order. The route awaits its composable’s `useFetch` query before passing the initial state to `PePaletteSsrPage`. The composable owns selection and retry, and each Nuxt palette route registers its own compiled stylesheet. [SSR palette usage](packages/domain/palette-ssr/README.md)
+
+`GET /api/palette-ssr` requires exactly one `name` query parameter with the lowercase value `aurora` or `mist`. It returns HTTP `200` with a JSON `{ palette, colors }` object. Aurora’s `colors` is `["indigo", "harbor blue"]` and Mist’s is `[]`. A missing, empty, repeated or unsupported `name` returns HTTP `400`, including when repeated values are identical.
+
+Build and start the production Nuxt server from the workspace root.
+
+```sh
+vp run --no-cache @goto/nuxt-app#build
+NITRO_HOST=127.0.0.1 NITRO_PORT=3000 node apps/nuxt/.output/server/index.mjs
+```
+
+In another terminal, inspect the HTML list, the redirect and examples of both API statuses.
+
+```sh
+curl -fsS http://127.0.0.1:3000/palette-ssr | rg -o '<li[^>]*>[^<]+</li>'
+curl -sSi http://127.0.0.1:3000/
+curl -sSi 'http://127.0.0.1:3000/api/palette-ssr?name=mist'
+curl -sSi 'http://127.0.0.1:3000/api/palette-ssr?name=aurora&name=aurora'
+```
 
 The Vite host installs Vue Router in `apps/vite/src/main.ts` and renders the matched route in `App.vue`. The route table in `src/router.ts` redirects `/` to `/palette` and lazy-loads `src/routes/public/PaletteRoute.vue`. This route imports the palette module and its compiled stylesheet. The sibling `src/routes/private/` directory reserves space for future pages.
 
