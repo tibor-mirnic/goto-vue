@@ -1,6 +1,7 @@
 import { type InjectionKey, inject, onScopeDispose, provide, shallowRef } from 'vue';
 import { getPaletteColors } from '../../api/index.ts';
-import { type PaletteState, createPaletteSelection } from './palette-selection.util.ts';
+import { createPaletteSelection } from './paletteSelection.util.ts';
+import type { PaletteState } from './paletteViewer.models.ts';
 
 const key: InjectionKey<ReturnType<typeof providePaletteViewer>> = Symbol('palette viewer');
 

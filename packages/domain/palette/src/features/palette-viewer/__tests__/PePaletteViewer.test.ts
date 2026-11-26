@@ -2,7 +2,7 @@ import { afterEach, expect, onTestFinished, test, vi } from 'vite-plus/test';
 import { defineComponent, effectScope, h, onServerPrefetch } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import PePaletteViewer from '../PePaletteViewer.vue';
-import { providePaletteViewer } from '../palette-viewer.provider.ts';
+import { providePaletteViewer } from '../paletteViewer.provider.ts';
 
 afterEach(() => vi.unstubAllGlobals());
 

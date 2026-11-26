@@ -1,5 +1,6 @@
 import { expect, test, vi } from 'vite-plus/test';
-import { type PaletteState, createPaletteSelection } from '../palette-selection.util.ts';
+import { createPaletteSelection } from '../paletteSelection.util.ts';
+import type { PaletteState } from '../paletteViewer.models.ts';
 
 const setup = () => {
   const states: PaletteState[] = [];

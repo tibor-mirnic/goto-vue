@@ -1,2 +1,2 @@
-export type { PaletteColors } from './palette-colors.ts';
+export type { PaletteColors } from './paletteColors.models.ts';
 export { getPaletteColors } from './palettes.api.ts';

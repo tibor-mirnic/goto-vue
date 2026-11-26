@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import type { ComponentOptions } from 'vue';
 import PePaletteViewer from './PePaletteViewer.vue';
-import { providePaletteViewer } from './palette-viewer.provider.ts';
+import { providePaletteViewer } from './paletteViewer.provider.ts';
 
 const meta = {
   title: 'Palette/Features/PePaletteViewer',

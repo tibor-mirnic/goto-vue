@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { type ComponentOptions, h, shallowRef } from 'vue';
 import type { PaletteName } from '../../api/palette.models.ts';
 import PePaletteSsrViewer from './PePaletteSsrViewer.vue';
-import type { PaletteViewerState } from './palette-viewer.models.ts';
-import { providePaletteSsrViewer } from './palette-viewer.provider.ts';
+import type { PaletteViewerState } from './paletteViewer.models.ts';
+import { providePaletteSsrViewer } from './paletteViewer.provider.ts';
 
 const exampleColors = {
   aurora: ['indigo', 'harbor blue'],

@@ -1,6 +1,6 @@
 import { type InjectionKey, type Ref, inject, provide } from 'vue';
 import { type PaletteName, paletteNames } from '../../api/palette.models.ts';
-import type { PaletteViewerState } from './palette-viewer.models.ts';
+import type { PaletteViewerState } from './paletteViewer.models.ts';
 
 type PaletteViewer = {
   readonly state: Readonly<Ref<PaletteViewerState>>;

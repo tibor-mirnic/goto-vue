@@ -27,12 +27,14 @@ const select = (palette: PaletteName) => {
 
 The Nuxt route composable selects Aurora and calls `useFetch`. The route awaits the query before supplying the initial state, and Nuxt reuses the server result during hydration. A changed selection or Retry refreshes the current palette once. The composable cancels superseded requests and supplies successful data that matches the current selection. [Nuxt route](../../../apps/nuxt/app/pages/%28public%29/palette-ssr.vue) · [Route composable](../../../apps/nuxt/app/features/public/palette-ssr/composables/usePaletteSsrRoute.ts)
 
-## API and composables layout
+## Package layout
 
 - `src/api/palette.models.ts` defines the palette names, result type and name guard shared by API code and the viewer.
 - `src/api/server/` implements the fixture read that Nitro calls through `@goto/domain-palette-ssr/server`. The Nuxt route composable calls the Nitro endpoint through `useFetch`.
 - `src/api/client/` is for reads that go directly from the browser to the data source. The sibling palette package’s [static asset read](../palette/src/api/palettes/palettes.api.ts) is an example.
-- `src/features/palette-viewer/composables/` contains the viewer controls. The page’s `__tests__/` directory covers rendering the supplied state and forwarding the viewer’s events.
+- `src/features/palette-ssr-viewer/` contains the viewer and its private `color-list/`, `picker/`, `retry/`, and `status/` directories. The picker owns `picker/usePaletteSsrPicker.ts`, and the status component owns `status/usePaletteSsrStatus.ts`. The page’s `__tests__/` directory covers rendering the supplied state and forwarding the viewer’s events.
+
+Use PascalCase for Vue component filenames. Name feature directories after the main component in kebab-case with the `Pe` module prefix removed, as in `PePaletteSsrViewer.vue` in `palette-ssr-viewer/`. Use camelCase TypeScript stems with `.provider.ts` and `.models.ts` suffixes for providers and models, as in `paletteViewer.provider.ts` and `paletteViewer.models.ts`.
 
 ## Reading palettes on the server
 

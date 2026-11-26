@@ -1,5 +1,5 @@
 import { expect, test } from 'vite-plus/test';
-import { parsePaletteColors } from '../palette-colors.ts';
+import { parsePaletteColors } from '../paletteColors.models.ts';
 
 test('preserves the names and order of the Aurora palette', () => {
   const names = ['indigo', 'harbor blue', 'indigo'];

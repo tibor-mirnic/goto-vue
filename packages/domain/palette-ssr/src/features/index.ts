@@ -1,1 +1,1 @@
-export { PePaletteSsrViewer, providePaletteSsrViewer } from './palette-viewer/index.ts';
+export { PePaletteSsrViewer, providePaletteSsrViewer } from './palette-ssr-viewer/index.ts';

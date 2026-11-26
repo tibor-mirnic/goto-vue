@@ -2,7 +2,7 @@
 import { toRef } from 'vue';
 import type { PaletteName } from '../../api/palette.models.ts';
 import { PePaletteSsrViewer, providePaletteSsrViewer } from '../../features/index.ts';
-import type { PaletteViewerState } from '../../features/palette-viewer/palette-viewer.models.ts';
+import type { PaletteViewerState } from '../../features/palette-ssr-viewer/paletteViewer.models.ts';
 
 const props = defineProps<{ state: PaletteViewerState }>();
 const emit = defineEmits<{ select: [palette: PaletteName]; retry: [] }>();

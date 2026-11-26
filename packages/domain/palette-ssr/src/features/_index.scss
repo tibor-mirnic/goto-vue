@@ -1,4 +1,4 @@
-@use './palette-viewer/pe-palette-ssr-viewer' as viewer;
+@use './palette-ssr-viewer/pe-palette-ssr-viewer' as viewer;
 
 @mixin load-pe-ssr-features($theme, $variables, $color-palette) {
   @include viewer.pe-palette-ssr-viewer($theme, $variables, $color-palette);
