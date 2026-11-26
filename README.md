@@ -25,6 +25,7 @@ For the root commands below, use `pnpm exec vp` in place of `vp` when running th
 | `vp run domain-palette-ssr:storybook`       | Starts the SSR palette Storybook on port 6008 with ready, empty, pending and retry examples.                                                                        |
 | `vp run domain-palette-ssr:storybook:build` | Builds the static SSR palette Storybook in `packages/domain/palette-ssr/storybook-static/`.                                                                         |
 | `vp run dev`                                | Starts the Vue Router host. Open `/palette` directly or follow the redirect from `/`.                                                                               |
+| `pnpm dev:api`                              | Starts the Hono palette API at `127.0.0.1:4000`. Use `HOST` and `PORT` to override it.                                                                              |
 | `vp run dev:nuxt`                           | Starts the Nuxt dev server. Open `/palette` or `/palette-ssr`.                                                                                                      |
 | `vp run nuxt:e2e`                           | Runs Playwright against the Nuxt host.                                                                                                                              |
 | `vp run vite:e2e`                           | Runs Playwright against the Vue Router host.                                                                                                                        |
@@ -104,6 +105,12 @@ The Nuxt host used the following command in a workspace where `apps/nuxt` was av
 
 ```sh
 pnpm exec vp create nuxt --no-interactive --no-agent --no-editor --no-hooks --package-manager pnpm -- nuxt -t minimal --no-install --no-modules --packageManager pnpm
+```
+
+The palette API used the official Hono Node.js template. Decline the generator’s dependency install prompt so Vite+ can integrate the app with the workspace lockfile. [Hono Node.js starter](https://hono.dev/docs/getting-started/nodejs)
+
+```sh
+pnpm exec vp create create-hono --no-interactive --no-agent --no-editor --no-hooks --package-manager pnpm -- api --template nodejs --pm pnpm
 ```
 
 1. Give the app a unique private package name, such as `@goto/nuxt-app`, so it can depend on the framework by its published name. Use `catalog:` for shared dependency versions and `workspace:*` for workspace libraries.

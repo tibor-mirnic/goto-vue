@@ -7,6 +7,7 @@
     "prepare": "vp config --no-agent",
     "ready": "vp run -r build && vp run check && vp run -r test",
     "dev": "vp run @goto/vite-app#dev",
+    "dev:api": "vp run --no-cache @goto/api#dev",
     "dev:nuxt": "vp run @goto/nuxt-app#dev",
     "nuxt:e2e": "vp run --no-cache @goto/nuxt-e2e#test:e2e",
     "vite:e2e": "vp run --no-cache @goto/vite-e2e#test:e2e",
