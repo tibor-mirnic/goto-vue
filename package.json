@@ -12,7 +12,9 @@
     "infrastructure-ui:storybook": "vp run @goto/infrastructure-ui#storybook",
     "infrastructure-ui:storybook:build": "vp run @goto/infrastructure-ui#build-storybook",
     "domain-palette:storybook": "vp run @goto/domain-palette#storybook",
-    "domain-palette:storybook:build": "vp run @goto/domain-palette#build-storybook"
+    "domain-palette:storybook:build": "vp run @goto/domain-palette#build-storybook",
+    "domain-palette-ssr:storybook": "vp run @goto/domain-palette-ssr#storybook",
+    "domain-palette-ssr:storybook:build": "vp run @goto/domain-palette-ssr#build-storybook"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",
