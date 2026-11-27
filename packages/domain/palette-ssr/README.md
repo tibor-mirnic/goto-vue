@@ -25,7 +25,7 @@ const select = (palette: PaletteName) => {
 
 `PaletteViewerState` carries the selected `palette` and a `status` of `pending`, `error` or `ready`. A `ready` state includes the ordered `colors` array, which can be empty. The page renders synchronously and updates when the host replaces the state. It emits `select` with the chosen `PaletteName` and `retry` when the user clicks Retry in an error state.
 
-The Nuxt route composable selects Aurora and calls `useFetch`. The route awaits the query before supplying the initial state, and Nuxt reuses the server result during hydration. A changed selection or Retry refreshes the current palette once. The composable cancels superseded requests and supplies successful data that matches the current selection. [Nuxt route](../../../apps/nuxt/app/pages/%28public%29/palette-ssr.vue) · [Route composable](../../../apps/nuxt/app/features/public/palette-ssr/composables/usePaletteSsrRoute.ts)
+The Nuxt route composable selects Aurora and calls `useFetch` against the same-origin `GET /api/palette-ssr?name=aurora`. The route awaits the query before supplying the initial state. Nuxt reuses the SSR payload on hydration without a second GET. A changed selection or Retry refreshes the current palette once, and the composable cancels superseded requests. [Nuxt route](../../../apps/nuxt/app/pages/%28public%29/palette-ssr.vue) · [Route composable](../../../apps/nuxt/app/features/public/palette-ssr/composables/usePaletteSsrRoute.ts)
 
 ## Package layout
 
@@ -48,8 +48,10 @@ export const initialPalette = await getPalette('aurora', 'https://palette.exampl
 
 `getPalette(name, origin)` returns a promise for a serializable `PaletteResult` with `palette` and `colors`. It rejects unsupported names with a `RangeError` before sending a request, then checks the HTTP response and validates the color array. The host can use `isPaletteName(value)` to report an invalid request before calling the reader.
 
+Nitro uses the server process's `API_URL` as the Hono origin and forwards the validated result as `{ palette, colors }`. Its endpoint returns 400 for an invalid query and 502 for a failed upstream read or invalid response. The page displays the host's error state and offers **Retry**. [Nuxt development and production setup](../../../README.md#host-routes) · [Nitro endpoint](../../../apps/nuxt/server/api/palette-ssr.get.ts)
+
 ## Storybook
 
-Run `vp run domain-palette-ssr:storybook` from the workspace root and open port 6008. In **Palette SSR → Features → PePaletteSsrViewer**, **Ready** shows Aurora’s colors, **Empty** shows Mist, and **Pending** shows the loading state. In **Retry After Failure**, click **Retry** to restore Aurora’s colors. Each story uses the viewer’s provider with its own local data.
+After [workspace setup](../../../README.md#first-checkout), run `pnpm domain-palette-ssr:storybook` from the root and open port 6008. In **Palette SSR → Features → PePaletteSsrViewer**, **Ready** shows Aurora’s colors, **Empty** shows Mist, and **Pending** shows the loading state. In **Retry After Failure**, click **Retry** to restore Aurora’s colors. Each story uses the viewer’s provider with its own local data and runs with Hono stopped.
 
-Run `vp run domain-palette-ssr:storybook:build` to generate `packages/domain/palette-ssr/storybook-static/`.
+Run `pnpm domain-palette-ssr:storybook:build` to generate `packages/domain/palette-ssr/storybook-static/`.

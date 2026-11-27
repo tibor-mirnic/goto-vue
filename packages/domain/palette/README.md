@@ -15,15 +15,15 @@ import '@goto/domain-palette/style.css';
 </template>
 ```
 
-Serve `/api/palettes/aurora` and `/api/palettes/mist` from the host with an array of nonempty color names, for example `["indigo", "harbor blue"]`. The viewer preserves the response order and duplicate colors. Selecting another palette cancels the earlier request.
+On selection the module makes a same-origin `GET /api/palettes/:name`. Its host proxies that path to Hono, which returns a raw array of nonempty color names or `[]` for a successful empty result. The viewer preserves response order and duplicate colors. Selecting another palette cancels the earlier request. After a failure, **Retry** requests the current palette again. [Host startup, outage and mock checks](../../../README.md#host-routes) · [Vite static deployment](../../../README.md#deploy-the-vite-static-build)
 
 ## Storybook
 
-Run `vp run domain-palette:storybook` from the workspace root and open port 6007. In **Palette → Features → PePaletteViewer**, choose **aurora** to see a list of colors or **mist** for an empty result. **Retry After Failure** starts at a failed request. Click **Retry** to load Aurora’s colors. The Docs page shows how the page provides state to the viewer. Each story mounts its own provider.
+After [workspace setup](../../../README.md#first-checkout), run `pnpm domain-palette:storybook` from the root and open port 6007. In **Palette → Features → PePaletteViewer**, choose **aurora** to see a list of colors or **mist** for an empty result. **Retry After Failure** starts at a failed request. Click **Retry** to load Aurora’s colors. The Docs page shows how the page provides state to the viewer. Each story mounts its own provider.
 
-The explorer serves `.storybook/public/api/palettes/` at `/api/palettes/`. Stories use the same loader and decoder as the page. The retry example supplies one failed response before retrying against the local asset. Canvas and Docs load the module’s default `src/style.scss` and share the UI explorer’s System, Light and Dark theme choices.
+The explorer serves its own fixtures from `.storybook/public/api/palettes/` at `/api/palettes/` and runs with Hono stopped. Stories use the same loader and decoder as the page. The retry example supplies one failed response before retrying against the local asset. Canvas and Docs load the module’s default `src/style.scss` and share the UI explorer’s System, Light and Dark theme choices.
 
-Run `vp run domain-palette:storybook:build` to generate `packages/domain/palette/storybook-static/`. Serve that directory at the web origin’s root so the absolute palette URLs resolve. Both commands build the module’s workspace dependencies first.
+Run `pnpm domain-palette:storybook:build` to generate `packages/domain/palette/storybook-static/`. Serve that directory at the web origin’s root so the absolute palette URLs resolve. Both commands build the module’s workspace dependencies first.
 
 The package’s configuration was generated from this directory using the official initializer, with the same pinned Vue/Vite and Docs versions as the UI explorer.
 
