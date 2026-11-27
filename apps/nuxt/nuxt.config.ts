@@ -1,12 +1,13 @@
 import { defineNuxtConfig } from 'nuxt/config';
-import { addDevServerHandler, defineNuxtModule } from 'nuxt/kit';
+import { addDevServerHandler, addNitroPlugin, createResolver, defineNuxtModule } from 'nuxt/kit';
 
 const paletteMocks = defineNuxtModule({
   setup: async (_options, nuxt) => {
     if (!nuxt.options.dev || process.env.ENABLE_MOCK_API !== 'true') return;
 
-    const { paletteMockHandler } = await import('./mocks/palettes.api.moq.ts');
-    addDevServerHandler({ route: '/api/palettes', handler: { nuxt: paletteMockHandler } });
+    const { paletteClientMockHandler } = await import('./mocks/paletteApiClient.moq.ts');
+    addDevServerHandler({ route: '/api/palettes', handler: { nuxt: paletteClientMockHandler } });
+    addNitroPlugin(createResolver(import.meta.url).resolve('./server/mocks/paletteApiServer.moq.ts'));
   }
 });
 

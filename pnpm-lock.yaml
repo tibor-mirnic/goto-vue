@@ -420,6 +420,9 @@ importers:
 
   packages/domain/palette-ssr:
     dependencies:
+      '@goto/infrastructure-http-client':
+        specifier: workspace:*
+        version: link:../../infrastructure/http-client
       '@goto/infrastructure-ui':
         specifier: workspace:*
         version: link:../../infrastructure/ui

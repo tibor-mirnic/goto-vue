@@ -30,23 +30,23 @@ The Nuxt route composable selects Aurora and calls `useFetch`. The route awaits 
 ## Package layout
 
 - `src/api/palette.models.ts` defines the palette names, result type and name guard shared by API code and the viewer.
-- `src/api/server/` implements the fixture read that Nitro calls through `@goto/domain-palette-ssr/server`. The Nuxt route composable calls the Nitro endpoint through `useFetch`.
+- `src/api/server/` implements the HTTP palette read that Nitro calls through `@goto/domain-palette-ssr/server`. The Nuxt route composable calls the Nitro endpoint through `useFetch`.
 - `src/api/client/` is for reads that go directly from the browser to the data source. The sibling palette package’s [palette API read](../palette/src/api/palettes/palettes.api.ts) is an example.
 - `src/features/palette-ssr-viewer/` contains the viewer and its private `color-list/`, `picker/`, `retry/`, and `status/` directories. The picker owns `picker/usePaletteSsrPicker.ts`, and the status component owns `status/usePaletteSsrStatus.ts`. The page’s `__tests__/` directory covers rendering the supplied state and forwarding the viewer’s events.
 
-Use PascalCase for Vue component filenames. Name feature directories after the main component in kebab-case with the `Pe` module prefix removed, as in `PePaletteSsrViewer.vue` in `palette-ssr-viewer/`. Use camelCase TypeScript stems with `.provider.ts` and `.models.ts` suffixes for providers and models, as in `paletteViewer.provider.ts` and `paletteViewer.models.ts`.
+Use PascalCase for Vue component filenames and match the component stem in its stories and tests, as in `PePaletteSsrViewer.stories.ts`. Name feature directories after the main component in kebab-case with the `Pe` module prefix removed, as in `PePaletteSsrViewer.vue` in `palette-ssr-viewer/`. Use camelCase TypeScript stems with `.provider.ts` and `.models.ts` suffixes for providers and models, as in `paletteViewer.provider.ts` and `paletteViewer.models.ts`.
 
 ## Reading palettes on the server
 
-Use `@goto/domain-palette-ssr/server` in server code to read a palette from a supplied source. The result can initialize the page’s state or be returned from the host’s HTTP endpoint.
+Use `@goto/domain-palette-ssr/server` in server code to read a palette from a configured API origin. The result can initialize the page’s state or be returned from the host’s HTTP endpoint.
 
 ```ts
-import { getPalette, readFixturePaletteColors } from '@goto/domain-palette-ssr/server';
+import { getPalette } from '@goto/domain-palette-ssr/server';
 
-export const initialPalette = await getPalette('aurora', readFixturePaletteColors);
+export const initialPalette = await getPalette('aurora', 'https://palette.example.test');
 ```
 
-`getPalette(name, source)` returns a promise for a serializable `PaletteResult` with `palette` and `colors`. A `PaletteSource` returns a color array synchronously or asynchronously. The fixture source returns `indigo` followed by `harbor blue` for Aurora and an empty array for Mist. Use `isPaletteName(value)` to validate untrusted input. `getPalette` rejects unsupported names with a `RangeError`.
+`getPalette(name, origin)` returns a promise for a serializable `PaletteResult` with `palette` and `colors`. It rejects unsupported names with a `RangeError` before sending a request, then checks the HTTP response and validates the color array. The host can use `isPaletteName(value)` to report an invalid request before calling the reader.
 
 ## Storybook
 

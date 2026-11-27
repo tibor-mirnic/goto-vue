@@ -1,8 +1,8 @@
-const apiUrl = process.env.API_URL ?? 'http://127.0.0.1:4000';
+import { paletteApiOrigin } from '../../utils/paletteApiOrigin.ts';
 
 export default defineEventHandler((event) => {
   const { pathname, search } = getRequestURL(event);
-  const upstream = new URL(apiUrl);
+  const upstream = new URL(paletteApiOrigin);
   upstream.pathname = pathname;
   upstream.search = search;
 

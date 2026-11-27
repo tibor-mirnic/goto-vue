@@ -41,7 +41,7 @@ npm exec --yes --package=create-storybook@10.6.9 -- create-storybook \
 - `src/api/palettes/palettes.api.ts` builds the request URL and uses the workspace HTTP client. The adjacent `paletteColors.models.ts` decodes the response.
 - `PePaletteViewer.vue` composes the private components in `color-list/`, `picker/`, `retry/`, and `status/`. The picker keeps its select binding in `picker/usePalettePicker.ts`, and the status component keeps its display logic in `status/usePaletteStatus.ts`. The child components use `UiLabel`, `UiSelect`, `UiButton` and `UiUl` from the public `@goto/infrastructure-ui` entry.
 
-Vue component filenames use PascalCase. The feature directory is the main component name in kebab-case with the `Pe` module prefix removed, as in `PePaletteViewer.vue` in `palette-viewer/`. TypeScript files use camelCase stems, as in `paletteViewer.provider.ts`, `paletteViewer.models.ts`, and `paletteSelection.util.ts`.
+Vue component filenames use PascalCase, and their stories and tests match the component stem, as in `PePaletteViewer.stories.ts`. The feature directory is the main component name in kebab-case with the `Pe` module prefix removed, as in `PePaletteViewer.vue` in `palette-viewer/`. Shared feature files use camelCase stems, as in `paletteViewer.provider.ts`, `paletteViewer.models.ts`, and `paletteSelection.util.ts`.
 
 `src/style.scss` builds the shipped CSS by calling the shared UI loader and the internal palette loader once each. The Vite entry imports this stylesheet and re-exports the module.
 

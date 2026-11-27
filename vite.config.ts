@@ -13,7 +13,7 @@ export default defineConfig({
     plugins: ['unicorn', 'typescript', 'oxc', 'import'],
     jsPlugins: [
       { name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' },
-      { name: 'workspace', specifier: './tooling/oxlint-plugin.mjs' }
+      { name: 'workspace', specifier: './tooling/oxlintPlugin.mjs' }
     ],
     rules: {
       'workspace/require-arrow-functions': 'error',

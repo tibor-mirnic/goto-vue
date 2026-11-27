@@ -27,6 +27,7 @@
     "check": "vp check && vp run vue:typecheck"
   },
   "dependencies": {
+    "@goto/infrastructure-http-client": "workspace:*",
     "@goto/infrastructure-ui": "workspace:*"
   },
   "devDependencies": {

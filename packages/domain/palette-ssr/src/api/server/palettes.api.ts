@@ -1,10 +1,20 @@
-import { type PaletteName, type PaletteResult, isPaletteName } from '../palette.models.ts';
+import { createHttpClient } from '@goto/infrastructure-http-client';
+import { type PaletteResult, isPaletteName } from '../palette.models.ts';
 
-export type PaletteSource = (palette: PaletteName) => readonly string[] | Promise<readonly string[]>;
+const { getJson } = createHttpClient((path, init) => fetch(path, { ...init, redirect: 'manual' }));
 
-export const getPalette = async (palette: unknown, readColors: PaletteSource): Promise<PaletteResult> => {
-  if (!isPaletteName(palette)) throw new RangeError('Unsupported palette name');
+const parsePaletteColors = (value: unknown): readonly string[] => {
+  if (!Array.isArray(value) || !value.every((color) => typeof color === 'string' && color.trim() !== '')) {
+    throw new TypeError('Expected an array of nonblank color names');
+  }
 
-  const colors = await readColors(palette);
-  return { palette, colors: [...colors] };
+  return value;
+};
+
+export const getPalette = async (name: unknown, origin: string): Promise<PaletteResult> => {
+  if (!isPaletteName(name)) throw new RangeError('Unsupported palette name');
+
+  const url = new URL(`/api/palettes/${name}`, origin);
+  const colors = await getJson(url.href, { parse: parsePaletteColors });
+  return { palette: name, colors: [...colors] };
 };

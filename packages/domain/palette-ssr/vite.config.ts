@@ -14,7 +14,7 @@ export default defineConfig({
       formats: ['es'],
       cssFileName: 'style'
     },
-    rolldownOptions: { external: ['vue', '@goto/infrastructure-ui'] }
+    rolldownOptions: { external: ['vue', '@goto/infrastructure-http-client', '@goto/infrastructure-ui'] }
   },
   run: {
     tasks: {
@@ -23,12 +23,12 @@ export default defineConfig({
       unit: { command: 'vp test', dependsOn: ['build'] },
       // The compiler reads templates and imported types outside Vite Task's input tracking.
       'vue:typecheck': {
-        command: 'node ../../../tooling/vue-tsc.cjs -p tsconfig.vue.json',
+        command: 'node ../../../tooling/vueTsc.cjs -p tsconfig.vue.json',
         cache: false,
         dependsOn: ['build']
       },
       declarations: {
-        command: 'node ../../../tooling/vue-tsc.cjs -p tsconfig.build.json',
+        command: 'node ../../../tooling/vueTsc.cjs -p tsconfig.build.json',
         cache: false,
         dependsOn: dependencyBuilds
       }

@@ -2,7 +2,7 @@
 
 ## Arrow-function lint rule
 
-The root Vite+ configuration loads the local Oxlint plugin through `lint.jsPlugins` and sets `workspace/require-arrow-functions` to `error`. Oxlint’s built-in `func-style` can require expressions for named functions, and `prefer-arrow-callback` covers callbacks. Together they still allow ordinary function expressions assigned to variables and shorthand methods on objects and classes. [Workspace configuration](../vite.config.ts) · [Rule implementation](./oxlint-plugin.mjs)
+The root Vite+ configuration loads the local Oxlint plugin through `lint.jsPlugins` and sets `workspace/require-arrow-functions` to `error`. Oxlint’s built-in `func-style` can require expressions for named functions, and `prefer-arrow-callback` covers callbacks. Together they still allow ordinary function expressions assigned to variables and shorthand methods on objects and classes. [Workspace configuration](../vite.config.ts) · [Rule implementation](./oxlintPlugin.mjs)
 
 ### Accepted TypeScript
 
@@ -47,7 +47,7 @@ Run `vp run check` from the workspace root. It discovers packages that define `v
 Each Vue package defines a `tsconfig.vue.json` that includes its SFCs and TypeScript sources and enables `strictTemplates`. Register a `vue:typecheck` task with `cache: false` in the package’s `vite.config.ts` so changes to imported types and templates are always checked. Invoke the root adapter using a path relative to the package directory. For example, the palette task uses this command.
 
 ```sh
-node ../../../tooling/vue-tsc.cjs -p tsconfig.vue.json
+node ../../../tooling/vueTsc.cjs -p tsconfig.vue.json
 ```
 
 The adapter selects the JavaScript TypeScript 6 compiler API required by `vue-tsc`. Its compiler arguments and project paths are interpreted from the caller’s directory. The root owns both checker dependencies, while the workspace’s native TypeScript compiler stays on version 7. A library can use the same adapter with a build tsconfig that enables declaration emit for its public entries. [Palette declaration configuration](../packages/domain/palette/tsconfig.build.json)

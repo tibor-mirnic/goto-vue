@@ -10,7 +10,7 @@
     "dev:server": "nuxt dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "vue:typecheck": "vp run build:dependencies && nuxt prepare && node ../../tooling/vue-tsc.cjs -b --noEmit"
+    "vue:typecheck": "vp run build:dependencies && nuxt prepare && node ../../tooling/vueTsc.cjs -b --noEmit"
   },
   "dependencies": {
     "@goto/domain-palette": "workspace:*",

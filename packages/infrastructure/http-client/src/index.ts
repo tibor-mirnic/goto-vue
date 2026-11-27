@@ -1,2 +1,2 @@
-export { createHttpClient } from './http-client.ts';
-export { HttpError } from './http-error.ts';
+export { createHttpClient } from './httpClient.ts';
+export { HttpError } from './httpError.ts';

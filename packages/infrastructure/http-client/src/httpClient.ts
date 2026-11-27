@@ -1,4 +1,4 @@
-import { HttpError } from './http-error.ts';
+import { HttpError } from './httpError.ts';
 
 type Fetch = (path: string, init: RequestInit) => Promise<Response>;
 

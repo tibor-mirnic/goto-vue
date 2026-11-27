@@ -45,7 +45,9 @@ Nuxt groups pages under `apps/nuxt/app/pages/(public)/` and `apps/nuxt/app/pages
 
 For Vite, start `pnpm dev:api` and `pnpm dev` in separate terminals from the workspace root. The Vite development and preview servers forward `/api/` paths unchanged to Hono at `http://127.0.0.1:4000`. Set `API_URL` to a different upstream origin when starting Vite or preview. `ENABLE_MOCK_API=true pnpm dev` uses the browser mocks and can run with Hono stopped. [Vite preview proxy options](https://vite.dev/config/preview-options.html#preview-proxy)
 
-For Nuxt, start `pnpm dev:api` and `pnpm dev:nuxt` in separate terminals. The chooser’s `GET /api/palettes/:name` forwards to Hono at `http://127.0.0.1:4000`. Nuxt handles `/api/palette-ssr` locally. Set `API_URL` to a different upstream origin when starting Nuxt development or the built Nitro server. `ENABLE_MOCK_API=true pnpm dev:nuxt` serves chooser mock responses from the Nuxt development server and can run with Hono stopped. [Nuxt server routes](https://nuxt.com/docs/4.x/directory-structure/server#route-parameters)
+For Nuxt, start `pnpm dev:api` and `pnpm dev:nuxt` in separate terminals. The chooser’s `GET /api/palettes/:name` forwards to Hono at `http://127.0.0.1:4000`. Nuxt handles `/api/palette-ssr` locally and reads the selected palette from the same Hono API. Set `API_URL` to a different upstream origin when starting Nuxt development or the built Nitro server. `ENABLE_MOCK_API=true pnpm dev:nuxt` serves mock responses for both palette routes and can run with Hono stopped. [Nuxt server routes](https://nuxt.com/docs/4.x/directory-structure/server#route-parameters)
+
+Both Nuxt mock adapters run on the server. `paletteApiClient.moq.ts` handles the request the browser starts when the user selects a palette in the chooser. `paletteApiServer.moq.ts` intercepts the Hono request Nitro starts for SSR, including later selections and Retry. [Chooser mock adapter](apps/nuxt/mocks/paletteApiClient.moq.ts) · [SSR mock adapter](apps/nuxt/server/mocks/paletteApiServer.moq.ts)
 
 Both hosts start `/palette` with “Choose a palette” selected. In normal mode, selecting `aurora` loads `/api/palettes/aurora` and lists `indigo` followed by `harbor blue`. Selecting `mist` loads `/api/palettes/mist`, an empty array (`[]`), and displays “No colors in mist”. If Hono is unavailable, the chooser shows an error. Start Hono and select Retry to reload the palette.
 
@@ -142,6 +144,12 @@ pnpm install
 pnpm install --frozen-lockfile
 pnpm exec vp run ready
 ```
+
+## File naming
+
+- Use camelCase stems for project-owned TypeScript, JavaScript and tooling files, as in `httpClient.ts` and `vueTsc.cjs`. Use purpose suffixes such as `.models.ts`, `.provider.ts`, and `.util.ts` where they describe the file’s role. Preserve `.api.ts` and `.api.moq.ts` for resource APIs and their mock handlers. Tests keep the source file’s stem and purpose suffix, as in `palettes.api.test.ts`.
+- Name Vue components in PascalCase and match the component’s full stem in its stories and tests, as in `UiUl.stories.ts` and `PePaletteSsrPage.test.ts`. Keep feature directories in kebab-case.
+- Use kebab-case for Sass partials and keep their leading underscore, as in `_pe-palette-viewer.scss`. Framework-discovered routes, configuration files, and ambient declarations follow their tool’s naming conventions.
 
 ## Commits and pushes
 
