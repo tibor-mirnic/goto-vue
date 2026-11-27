@@ -2,7 +2,6 @@ import { HttpResponse, http } from 'msw/http';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, expect, test } from 'vite-plus/test';
 import { createPaletteHandlers } from '../../../index.moq.ts';
-import { readMockPaletteColors } from './paletteColors.moq.ts';
 
 const origin = 'https://palette.example.test';
 const aurora = `${origin}/api/palettes/aurora`;
@@ -29,18 +28,16 @@ test('serves the populated and empty palettes as raw JSON arrays', async () => {
   const mistColors = await mistResponse.json();
   expect(auroraColors).toEqual(['coral', 'violet']);
   expect(mistColors).toEqual([]);
-  expect(auroraColors).toEqual(readMockPaletteColors('aurora'));
-  expect(mistColors).toEqual(readMockPaletteColors('mist'));
 });
 
-test('can override Aurora with a temporary failure', async () => {
+test('restores the default Aurora response after resetting a temporary override', async () => {
   server.use(http.get(aurora, () => new HttpResponse(null, { status: 503 })));
 
   expect((await fetch(aurora)).status).toBe(503);
   expect(await (await fetch(mist)).json()).toEqual([]);
-});
 
-test('restores the default response after the override', async () => {
+  server.resetHandlers();
+
   const response = await fetch(aurora);
   expect(response.status).toBe(200);
   expect(await response.json()).toEqual(['coral', 'violet']);
@@ -57,10 +54,9 @@ test.each([
   expect(await (await fetch(url, { method })).text()).toBe('unrelated traffic');
 });
 
-test('creates fresh handlers and returns independent fixture arrays', () => {
+test('creates fresh handlers', () => {
   const nextHandlers = createPaletteHandlers(origin);
   expect(nextHandlers).toHaveLength(2);
   expect(nextHandlers[0]).not.toBe(handlers[0]);
   expect(nextHandlers[1]).not.toBe(handlers[1]);
-  expect(readMockPaletteColors('aurora')).not.toBe(readMockPaletteColors('aurora'));
 });

@@ -9,8 +9,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: 'entry.js',
-        'index.moq': 'src/index.moq.ts',
-        'api/palettes/__tests__/paletteColors.moq': 'src/api/palettes/__tests__/paletteColors.moq.ts'
+        'index.moq': 'src/index.moq.ts'
       },
       formats: ['es'],
       cssFileName: 'style'

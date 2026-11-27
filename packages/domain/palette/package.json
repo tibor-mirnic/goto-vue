@@ -20,10 +20,6 @@
       "types": "./dist/index.moq.d.ts",
       "import": "./dist/index.moq.js"
     },
-    "./moq/fixtures": {
-      "types": "./dist/api/palettes/__tests__/paletteColors.moq.d.ts",
-      "import": "./dist/api/palettes/__tests__/paletteColors.moq.js"
-    },
     "./style.css": "./dist/style.css"
   },
   "scripts": {

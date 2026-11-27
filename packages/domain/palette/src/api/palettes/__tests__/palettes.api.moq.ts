@@ -1,16 +1,15 @@
 import { HttpResponse, http } from 'msw/http';
-import { type MockPaletteName, readMockPaletteColors } from './paletteColors.moq.ts';
 
 export const createPaletteHandlers = (origin: string) => {
   const appOrigin = new URL(origin).origin;
-  const getPalette = (palette: MockPaletteName) =>
+  const getPalette = (palette: string, colors: readonly string[]) =>
     http.get(
       ({ request }) => {
         const { origin, pathname } = new URL(request.url);
         return origin === appOrigin && pathname === `/api/palettes/${palette}`;
       },
-      () => HttpResponse.json(readMockPaletteColors(palette))
+      () => HttpResponse.json(colors)
     );
 
-  return [getPalette('aurora'), getPalette('mist')];
+  return [getPalette('aurora', ['coral', 'violet']), getPalette('mist', [])];
 };

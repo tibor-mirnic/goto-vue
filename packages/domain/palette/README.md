@@ -36,8 +36,9 @@ npm exec --yes --package=create-storybook@10.6.9 -- create-storybook \
 ## Source layout and build
 
 - `src/index.ts` exports `PaletteModule`. The `/components` subpath resolves to the same compiled module and declarations.
+- `@goto/domain-palette/moq` exports `createPaletteHandlers(origin)` for hosts that enable MSW. The handlers own their response data and match the two palette GETs on that origin.
 - `src/module/PaletteModule.vue` mounts `PePalettePage`. The page provides the viewer’s context and mounts `PePaletteViewer`.
-- `src/features/palette-viewer/index.ts` exposes the viewer and its provider within the package. `paletteViewer.provider.ts` supplies the palette names, loads static assets through the domain API, and disposes the selection workflow with the page scope. `paletteViewer.models.ts` defines the viewer state, and `paletteSelection.util.ts` coordinates loading, cancellation and retry.
+- `src/features/palette-viewer/index.ts` exposes the viewer and its provider within the package. `paletteViewer.provider.ts` supplies the palette names, reads from the host’s palette API, and disposes the selection workflow with the page scope. `paletteViewer.models.ts` defines the viewer state, and `paletteSelection.util.ts` coordinates loading, cancellation and retry.
 - `src/api/palettes/palettes.api.ts` builds the request URL and uses the workspace HTTP client. The adjacent `paletteColors.models.ts` decodes the response.
 - `PePaletteViewer.vue` composes the private components in `color-list/`, `picker/`, `retry/`, and `status/`. The picker keeps its select binding in `picker/usePalettePicker.ts`, and the status component keeps its display logic in `status/usePaletteStatus.ts`. The child components use `UiLabel`, `UiSelect`, `UiButton` and `UiUl` from the public `@goto/infrastructure-ui` entry.
 
