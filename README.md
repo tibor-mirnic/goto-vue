@@ -83,9 +83,9 @@ After installing workspace dependencies, run the following once from the reposit
 pnpm --filter @goto/nuxt-e2e exec playwright install chromium --only-shell
 ```
 
-Run `vp run nuxt:e2e` for the Nuxt host or `vp run vite:e2e` for the Vite/Vue Router host. Each suite builds and starts its own Hono server and its host on separate loopback ports. Nuxt uses its built Nitro server, and Vite runs in preview.
+Run `pnpm nuxt:e2e` or `pnpm vite:e2e` for the built Nitro server and Vite preview respectively. Run `pnpm nuxt:e2e:mock` or `pnpm vite:e2e:mock` for development interception, outage, and Retry. The suites manage their own host and Hono processes on separate loopback ports. Run one suite at a time in a checkout because the commands share generated build files. Use separate checkouts for parallel runs.
 
-The specs under `apps/nuxt-e2e/tests/` and `apps/vite-e2e/tests/` exercise each host’s `/palette` route from the initial idle state through the Aurora and Mist selections. Both hosts proxy those reads to Hono. Unit and component tests run separately through Vitest.
+Both workspaces exercise the idle chooser and Aurora and Mist selections. Nuxt also checks `/palette-ssr`, including the initial HTML, hydration, later selections, Retry, and query validation. Unit and component tests run separately through Vitest.
 
 To scaffold another host suite, create a private test workspace in an unused `apps/` directory. From the repository root, run the official Playwright generator through Vite+, passing the workspace’s directory name after `--`. The Vite suite used this form. [Vite+ generators](https://viteplus.dev/guide/create)
 

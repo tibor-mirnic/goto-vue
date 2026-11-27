@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --project production",
+    "test:e2e:mock": "playwright test --project mock",
     "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {

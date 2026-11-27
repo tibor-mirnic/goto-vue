@@ -213,6 +213,9 @@ catalogs:
     '@vitest/coverage-v8':
       specifier: 5.1.0
       version: 5.1.0
+    devalue:
+      specifier: 6.0.4
+      version: 6.0.4
     hono:
       specifier: ^4.13.16
       version: 4.13.22
@@ -334,6 +337,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.6
+      devalue:
+        specifier: 'catalog:'
+        version: 6.0.4
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
